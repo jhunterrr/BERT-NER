@@ -32,6 +32,7 @@ class Ner(BertForTokenClassification):
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,valid_ids=None,attention_mask_label=None):
         sequence_output = self.bert(input_ids, token_type_ids, attention_mask,head_mask=None)[0]
         batch_size,max_len,feat_dim = sequence_output.shape
+        #valid output device usually cuda but cpu for local run on my machine
         valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device='cuda')
         for i in range(batch_size):
             jj = -1
@@ -68,7 +69,7 @@ class InputExample(object):
             guid: Unique id for the example.
             text_a: string. The untokenized text of the first sequence. For single
             sequence tasks, only this sequence must be specified.
-            text_b: (Optional) string. The untokenized text of the second sequence.
+            text_b: (Optional) string. The untokenized text of the second sequence. (where we want to implement our sequence of labels for zero shot?)
             Only must be specified for sequence pair tasks.
             label: (Optional) string. The label of the example. This should be
             specified for train and dev examples, but not for test examples.
@@ -106,6 +107,8 @@ def readfile(filename):
             continue
         splits = line.split(' ')
         sentence.append(splits[0])
+        #insert sep and labels here?
+        #----------------------------
         label.append(splits[-1][:-1])
 
     if len(sentence) >0:
@@ -165,16 +168,36 @@ class NerProcessor(DataProcessor):
             label = label
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
+        
+        #for i, label in enumerate(labels):
+        #    ntokens.append(label)
+        #    segment_ids.append(0)
+        #    if len(labels) > i:
+        #        label_ids.append(label_map[labels[i]])
 
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
 
     label_map = {label : i for i, label in enumerate(label_list,1)}
+    print(label_map)
+    
+    #add labels to text
+    #for label in label_list:
+    #    examples.text_a = ' '.join(label)
 
     features = []
     for (ex_index,example) in enumerate(examples):
         textlist = example.text_a.split(' ')
+        #add sep token?
+        textlist.append("[SEP]")
+        textlist.extend(label_list[:-2])
+        #print(textlist)
+        
         labellist = example.label
+        labellist.append("[SEP]")
+        labellist.extend(label_list[:-2])
+        #print(labellist)
+        
         tokens = []
         labels = []
         valid = []
@@ -367,6 +390,7 @@ def main():
     processors = {"ner":NerProcessor}
 
     if args.local_rank == -1 or args.no_cuda:
+    #cuda instead of cpu usually
         device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
         n_gpu = torch.cuda.device_count()
     else:
