@@ -168,7 +168,7 @@ class NerProcessor(DataProcessor):
             label = label
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
-        
+
         #for i, label in enumerate(labels):
         #    ntokens.append(label)
         #    segment_ids.append(0)
@@ -180,24 +180,24 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
 
     label_map = {label : i for i, label in enumerate(label_list,1)}
     print(label_map)
-    
+
     #add labels to text
     #for label in label_list:
     #    examples.text_a = ' '.join(label)
 
     features = []
     for (ex_index,example) in enumerate(examples):
-        textlist = example.text_a.split(' ')
-        #add sep token?
-        textlist.append("[SEP]")
-        textlist.extend(label_list[:-2])
-        #print(textlist)
-        
-        labellist = example.label
-        labellist.append("[SEP]")
-        labellist.extend(label_list[:-2])
+        # textlist = example.text_a.split(' ')
+        # #add sep token?
+        # textlist.append("[SEP]")
+        # textlist.extend(label_list[:-2])
+        # #print(textlist)
+        #
+        # labellist = example.label
+        # labellist.append("[SEP]")
+        # labellist.extend(label_list[:-2])
         #print(labellist)
-        
+
         tokens = []
         labels = []
         valid = []
