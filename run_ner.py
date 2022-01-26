@@ -169,11 +169,9 @@ class NerProcessor(DataProcessor):
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
 
-        #for i, label in enumerate(labels):
-        #    ntokens.append(label)
-        #    segment_ids.append(0)
-        #    if len(labels) > i:
-        #        label_ids.append(label_map[labels[i]])
+
+def get_simple_labels():
+        return ["PER","ORG","LOC","MISC"]
 
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
@@ -181,21 +179,34 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
     label_map = {label : i for i, label in enumerate(label_list,1)}
     print(label_map)
 
-    #add labels to text
-    #for label in label_list:
-    #    examples.text_a = ' '.join(label)
-
     features = []
     for (ex_index,example) in enumerate(examples):
-        # textlist = example.text_a.split(' ')
-        # #add sep token?
+        textlist = example.text_a.split(' ')
+
+    #code to create text list with all added tokens
         # textlist.append("[SEP]")
         # textlist.extend(label_list[:-2])
         # #print(textlist)
-        #
+
         # labellist = example.label
         # labellist.append("[SEP]")
-        # labellist.extend(label_list[:-2])
+        # for label in label_list[:-2]:
+        #     labellist.extend("O")
+        # #print(labellist)
+
+    #code to create text list with simplified tokens
+    #uncomment shuffle method to implement an "un-predefined" list
+        textlist.append("[SEP]")
+        simp_labs = get_simple_labels()
+        random.shuffle(simp_labs)
+        textlist.extend(simp_labs)
+        #print(textlist)
+
+        labellist = example.label
+        labellist.append("[SEP]")
+        #labellist.extend(["B-PER","B-ORG","B-LOC"])
+        for label in simp_labs:
+            labellist.extend("O")
         #print(labellist)
 
         tokens = []
