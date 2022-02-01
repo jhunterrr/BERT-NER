@@ -510,7 +510,9 @@ def main():
     global_step = 0
     nb_tr_steps = 0
     tr_loss = 0
-    label_map = {i : label for i, label in enumerate(label_list,1)}
+    #label_map = {i : label for i, label in enumerate(label_list,1)}
+    label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+        "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
     if args.do_train:
         train_features = convert_examples_to_features(
             train_examples, label_list, args.max_seq_length, tokenizer)
@@ -565,7 +567,9 @@ def main():
         model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
         model_to_save.save_pretrained(args.output_dir)
         tokenizer.save_pretrained(args.output_dir)
-        label_map = {i : label for i, label in enumerate(label_list,1)}
+        #label_map = {i : label for i, label in enumerate(label_list,1)}
+        label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+            "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
         model_config = {"bert_model":args.bert_model,"do_lower":args.do_lower_case,"max_seq_length":args.max_seq_length,"num_labels":len(label_list)+1,"label_map":label_map}
         json.dump(model_config,open(os.path.join(args.output_dir,"model_config.json"),"w"))
         # Load a trained model and config that you have fine-tuned
@@ -602,7 +606,9 @@ def main():
         nb_eval_steps, nb_eval_examples = 0, 0
         y_true = []
         y_pred = []
-        label_map = {i : label for i, label in enumerate(label_list,1)}
+        #label_map = {i : label for i, label in enumerate(label_list,1)}
+        label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+            "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
         for input_ids, input_mask, segment_ids, label_ids,valid_ids,l_mask in tqdm(eval_dataloader, desc="Evaluating"):
             input_ids = input_ids.to(device)
             input_mask = input_mask.to(device)
