@@ -210,19 +210,21 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         random.shuffle(shuffle_map)
         dict(zip(label_map, shuffle_map))
 
-
     #code to create text list with simplified tokens
     #uncomment shuffle method to implement an "un-predefined" list
         textlist.append("[SEP]")
         simp_labs = get_simple_labels()
         textlist.extend(simp_labs)
+        print(textlist)
 
         labellist = example.label
         labellist.append("O")
         labellist.extend(["O","B-PER","B-ORG","B-LOC","B-MISC"])
+
         # for label in simp_labs:
         #     labellist.extend("O")
-        #print(labellist)
+
+        print(labellist)
 
         tokens = []
         labels = []
