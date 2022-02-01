@@ -206,9 +206,9 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         # #print(labellist)
 
     #shuffle label map
-    shuffle_map = list(label_map.values())
-    random.shuffle(shuffle_map)
-    dict(zip(label_map, shuffle_map))
+        shuffle_map = list(label_map.values())
+        random.shuffle(shuffle_map)
+        dict(zip(label_map, shuffle_map))
 
 
     #code to create text list with simplified tokens
