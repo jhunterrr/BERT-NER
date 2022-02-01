@@ -215,7 +215,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         textlist.append("[SEP]")
         simp_labs = get_simple_labels()
         textlist.extend(simp_labs)
-        print(textlist)
+        # print(textlist)
 
         labellist = example.label
         labellist.append("O")
@@ -224,7 +224,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         # for label in simp_labs:
         #     labellist.extend("O")
 
-        print(labellist)
+        # print(labellist)
 
         tokens = []
         labels = []
