@@ -8,6 +8,7 @@ import os
 import random
 import sys
 
+
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -21,6 +22,8 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 
 from seqeval.metrics import classification_report
+
+import random
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
@@ -170,13 +173,21 @@ class NerProcessor(DataProcessor):
         return examples
 
 
+
 def get_simple_labels():
-        return ["PER","ORG","LOC","MISC"]
+        return ["O","person","organisation","location","miscellaneous"]
+
+    #map old labels to simple labels
 
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
 
-    label_map = {label : i for i, label in enumerate(label_list,1)}
+    #default label map, 1-11
+    #label_map = {label : i for i, label in enumerate(label_list,1)}
+
+    #new label map, pointing old labels to simplified labels
+    label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+        "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
     print(label_map)
 
     features = []
@@ -194,19 +205,23 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         #     labellist.extend("O")
         # #print(labellist)
 
+    #shuffle label map
+    shuffle_map = list(label_map.values())
+    random.shuffle(shuffle_map)
+    dict(zip(label_map, shuffle_map))
+
+
     #code to create text list with simplified tokens
     #uncomment shuffle method to implement an "un-predefined" list
         textlist.append("[SEP]")
         simp_labs = get_simple_labels()
-        random.shuffle(simp_labs)
         textlist.extend(simp_labs)
-        #print(textlist)
 
         labellist = example.label
-        labellist.append("[SEP]")
-        #labellist.extend(["B-PER","B-ORG","B-LOC"])
-        for label in simp_labs:
-            labellist.extend("O")
+        labellist.append("O")
+        labellist.extend(["B-PER","B-ORG","B-LOC"])
+        # for label in simp_labs:
+        #     labellist.extend("O")
         #print(labellist)
 
         tokens = []
