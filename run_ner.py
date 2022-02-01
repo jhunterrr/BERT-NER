@@ -219,7 +219,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
 
         labellist = example.label
         labellist.append("O")
-        labellist.extend(["B-PER","B-ORG","B-LOC"])
+        labellist.extend(["O","B-PER","B-ORG","B-LOC","B-MISC"])
         # for label in simp_labs:
         #     labellist.extend("O")
         #print(labellist)
