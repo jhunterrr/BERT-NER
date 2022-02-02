@@ -167,6 +167,13 @@ class NerProcessor(DataProcessor):
     def get_labels(self):
         return ["O", "miscellaneous", "person", "organisation", "location", "[CLS]", "[SEP]"]
 
+    #throws error:
+    # File "BERT-NER/run_ner.py", line 255, in convert_examples_to_features
+    # label_ids.append(label_map[labels[i]])
+    # KeyError: 'B-ORG'
+
+    # create method that gets original label list, and maps to new simplified labels?
+
     def _create_examples(self,lines,set_type):
         examples = []
         for i,(sentence,label) in enumerate(lines):
@@ -206,14 +213,17 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         random.shuffle(shuffle_map)
         dict(zip(label_map, shuffle_map))
 
-        #code to create text list with simplified tokens
+        # append sep token before addition of label list
         textlist.append("[SEP]")
         simp_labs = get_simple_labels()
         textlist.extend(simp_labs)
 
         labellist = example.label
+
+        # "O" for sep token
         labellist.append("O")
 
+        # "O" default for labels
         for label in simp_labs:
             labellist.extend("O")
 
@@ -238,6 +248,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         if len(tokens) >= max_seq_length - 1:
             tokens = tokens[0:(max_seq_length - 2)]
             labels = labels[0:(max_seq_length - 2)]
+            print(labels)
             valid = valid[0:(max_seq_length - 2)]
             label_mask = label_mask[0:(max_seq_length - 2)]
         ntokens = []
