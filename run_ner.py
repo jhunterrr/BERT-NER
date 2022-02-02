@@ -159,8 +159,12 @@ class NerProcessor(DataProcessor):
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "test.txt")), "test")
 
+    # def get_labels(self):
+    #     return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
+
+    #simple labels
     def get_labels(self):
-        return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
+        return ["O", "miscellaneous", "miscellaneous", "person", "person", "organisation", "location", "location", "[CLS]", "[SEP]"]
 
     def _create_examples(self,lines,set_type):
         examples = []
@@ -172,10 +176,8 @@ class NerProcessor(DataProcessor):
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
 
-
-
 def get_simple_labels():
-        return ["O","person","organisation","location","miscellaneous"]
+        return ["O","person","organisation","location"]
 
     #map old labels to simple labels
 
@@ -183,11 +185,11 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
     """Loads a data file into a list of `InputBatch`s."""
 
     #default label map, 1-11
-    #label_map = {label : i for i, label in enumerate(label_list,1)}
+    label_map = {label : i for i, label in enumerate(label_list,1)}
 
     #new label map, pointing old labels to simplified labels
-    label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-        "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
+    #label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+    #    "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
     print(label_map)
 
     features = []
@@ -219,10 +221,10 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
 
         labellist = example.label
         labellist.append("O")
-        labellist.extend(["O","B-PER","B-ORG","B-LOC","B-MISC"])
+        #labellist.extend(["O","B-PER","B-ORG","B-LOC","B-MISC"])
 
-        # for label in simp_labs:
-        #     labellist.extend("O")
+        for label in simp_labs:
+            labellist.extend("O")
 
         # print(labellist)
 
@@ -510,9 +512,9 @@ def main():
     global_step = 0
     nb_tr_steps = 0
     tr_loss = 0
-    #label_map = {i : label for i, label in enumerate(label_list,1)}
-    label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-        "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
+    label_map = {i : label for i, label in enumerate(label_list,1)}
+    # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+    #     "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
     if args.do_train:
         train_features = convert_examples_to_features(
             train_examples, label_list, args.max_seq_length, tokenizer)
@@ -567,9 +569,9 @@ def main():
         model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
         model_to_save.save_pretrained(args.output_dir)
         tokenizer.save_pretrained(args.output_dir)
-        #label_map = {i : label for i, label in enumerate(label_list,1)}
-        label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-            "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
+        label_map = {i : label for i, label in enumerate(label_list,1)}
+        # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+        #     "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
         model_config = {"bert_model":args.bert_model,"do_lower":args.do_lower_case,"max_seq_length":args.max_seq_length,"num_labels":len(label_list)+1,"label_map":label_map}
         json.dump(model_config,open(os.path.join(args.output_dir,"model_config.json"),"w"))
         # Load a trained model and config that you have fine-tuned
@@ -606,9 +608,9 @@ def main():
         nb_eval_steps, nb_eval_examples = 0, 0
         y_true = []
         y_pred = []
-        #label_map = {i : label for i, label in enumerate(label_list,1)}
-        label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-            "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
+        label_map = {i : label for i, label in enumerate(label_list,1)}
+        # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
+        #    "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
         for input_ids, input_mask, segment_ids, label_ids,valid_ids,l_mask in tqdm(eval_dataloader, desc="Evaluating"):
             input_ids = input_ids.to(device)
             input_mask = input_mask.to(device)
