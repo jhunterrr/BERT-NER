@@ -164,7 +164,7 @@ class NerProcessor(DataProcessor):
 
     #simple labels
     def get_labels(self):
-        return ["O", "miscellaneous", "miscellaneous", "person", "person", "organisation", "location", "location", "[CLS]", "[SEP]"]
+        return ["O", "miscellaneous", "person", "organisation", "location", "[CLS]", "[SEP]"]
 
     def _create_examples(self,lines,set_type):
         examples = []
