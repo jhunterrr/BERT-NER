@@ -159,10 +159,11 @@ class NerProcessor(DataProcessor):
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "test.txt")), "test")
 
+    # default labels
     # def get_labels(self):
     #     return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
 
-    #simple labels
+    # simple labels
     def get_labels(self):
         return ["O", "miscellaneous", "person", "organisation", "location", "[CLS]", "[SEP]"]
 
@@ -176,57 +177,48 @@ class NerProcessor(DataProcessor):
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
 
+#labels to append to sentence after sep token
 def get_simple_labels():
         return ["O","person","organisation","location"]
-
-    #map old labels to simple labels
 
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
 
-    #default label map, 1-11
     label_map = {label : i for i, label in enumerate(label_list,1)}
-
-    #new label map, pointing old labels to simplified labels
-    #label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-    #    "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
     print(label_map)
 
     features = []
     for (ex_index,example) in enumerate(examples):
         textlist = example.text_a.split(' ')
 
-    #code to create text list with all added tokens
+        #code to create text list with all added tokens
+
         # textlist.append("[SEP]")
         # textlist.extend(label_list[:-2])
-        # #print(textlist)
 
         # labellist = example.label
         # labellist.append("[SEP]")
         # for label in label_list[:-2]:
         #     labellist.extend("O")
-        # #print(labellist)
 
-    #shuffle label map
+        #shuffle label map
         shuffle_map = list(label_map.values())
         random.shuffle(shuffle_map)
         dict(zip(label_map, shuffle_map))
 
-    #code to create text list with simplified tokens
-    #uncomment shuffle method to implement an "un-predefined" list
+        #code to create text list with simplified tokens
         textlist.append("[SEP]")
         simp_labs = get_simple_labels()
         textlist.extend(simp_labs)
-        # print(textlist)
 
         labellist = example.label
         labellist.append("O")
-        #labellist.extend(["O","B-PER","B-ORG","B-LOC","B-MISC"])
 
         for label in simp_labs:
             labellist.extend("O")
 
         # print(labellist)
+        # print(textlist)
 
         tokens = []
         labels = []
