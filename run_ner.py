@@ -248,7 +248,6 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         if len(tokens) >= max_seq_length - 1:
             tokens = tokens[0:(max_seq_length - 2)]
             labels = labels[0:(max_seq_length - 2)]
-            print(labels)
             valid = valid[0:(max_seq_length - 2)]
             label_mask = label_mask[0:(max_seq_length - 2)]
         ntokens = []
@@ -263,6 +262,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             ntokens.append(token)
             segment_ids.append(0)
             if len(labels) > i:
+                print(labels)
                 label_ids.append(label_map[labels[i]])
         ntokens.append("[SEP]")
         segment_ids.append(0)
