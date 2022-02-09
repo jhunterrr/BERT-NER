@@ -162,11 +162,7 @@ class NerProcessor(DataProcessor):
     # default labels
     def get_labels(self):
         return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
-      
-    #labels to append to sentence after sep token
-    def get_simple_labels():
-        return ["O","person","organisation","location"]
-   
+    
     def _create_examples(self,lines,set_type):
         examples = []
         for i,(sentence,label) in enumerate(lines):
@@ -177,6 +173,10 @@ class NerProcessor(DataProcessor):
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
 
+#labels to append to sentence after sep token
+def get_simple_labels():
+    return ["O","person","organisation","location"]      
+      
 # simple labels
 simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
     "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
