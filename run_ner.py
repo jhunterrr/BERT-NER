@@ -510,7 +510,7 @@ def main():
     global_step = 0
     nb_tr_steps = 0
     tr_loss = 0
-    label_map = {i : label for i, label in enumerate(simplified_labels[label_list],1)}
+    label_map = {i : label for i, label in enumerate(label_list,1)}
     # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
     #     "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
     if args.do_train:
