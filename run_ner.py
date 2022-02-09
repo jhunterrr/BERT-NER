@@ -177,6 +177,9 @@ class NerProcessor(DataProcessor):
 
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
+    
+    for label in label_list:
+      label = simplified_labels[label]
 
     label_map = {label : i for i, label in enumerate(label_list,1)}
     print(label_map)
