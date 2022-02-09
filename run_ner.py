@@ -160,13 +160,18 @@ class NerProcessor(DataProcessor):
             self._read_tsv(os.path.join(data_dir, "test.txt")), "test")
 
     # default labels
-    # def get_labels(self):
-    #     return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
+    def get_labels(self):
+        return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
 
     # simple labels
-    def get_labels(self):
-        return ["O", "miscellaneous", "person", "organisation", "location", "[CLS]", "[SEP]"]
-
+    def get_labels(self, key):
+        return ['O': "O", 'B-MISC': "miscellaneous", 'I-MISC': "miscellaneous", 'B-PER': "person", 'I-PER': "person", 
+                'B-ORG': "organisation", 'I-ORG': "organisation", 'B-LOC': "location", 'I-LOC': "location", '[CLS]': "[CLS]", '[SEP]': "[SEP]"]
+   
+    #labels to append to sentence after sep token
+    def add_simple_labels(self):
+        return ["O","person","organisation","location"]
+      
     #throws error:
     # File "BERT-NER/run_ner.py", line 255, in convert_examples_to_features
     # label_ids.append(label_map[labels[i]])
@@ -184,9 +189,7 @@ class NerProcessor(DataProcessor):
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
 
-#labels to append to sentence after sep token
-def get_simple_labels():
-        return ["O","person","organisation","location"]
+
 
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
@@ -237,7 +240,8 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         for i, word in enumerate(textlist):
             token = tokenizer.tokenize(word)
             tokens.extend(token)
-            label_1 = labellist[i]
+            label_1 = get_simple_labels(labellist[i])
+            print(label_1)
             for m in range(len(token)):
                 if m == 0:
                     labels.append(label_1)
@@ -263,7 +267,8 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             segment_ids.append(0)
             if len(labels) > i:
                 print(labels)
-                label_ids.append(label_map[labels[i]])
+                label_ids.append(label_map[get_simple_labels(labels[i])])
+                print(label_ids)
         ntokens.append("[SEP]")
         segment_ids.append(0)
         valid.append(1)
