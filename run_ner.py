@@ -168,7 +168,7 @@ class NerProcessor(DataProcessor):
                 "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
    
     #labels to append to sentence after sep token
-    def get_simple_labels(self):
+    def get_simple_labels():
         return ["O","person","organisation","location"]
       
     #throws error:
