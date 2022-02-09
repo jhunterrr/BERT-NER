@@ -162,22 +162,11 @@ class NerProcessor(DataProcessor):
     # default labels
     def get_labels(self):
         return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
-
-    # simple labels
-    simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
-                "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
-   
+      
     #labels to append to sentence after sep token
     def get_simple_labels():
         return ["O","person","organisation","location"]
-      
-    #throws error:
-    # File "BERT-NER/run_ner.py", line 255, in convert_examples_to_features
-    # label_ids.append(label_map[labels[i]])
-    # KeyError: 'B-ORG'
-
-    # create method that gets original label list, and maps to new simplified labels?
-
+   
     def _create_examples(self,lines,set_type):
         examples = []
         for i,(sentence,label) in enumerate(lines):
@@ -188,8 +177,10 @@ class NerProcessor(DataProcessor):
             examples.append(InputExample(guid=guid,text_a=text_a,text_b=text_b,label=label))
         return examples
 
-
-
+# simple labels
+simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
+    "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
+      
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
 
@@ -519,7 +510,7 @@ def main():
     global_step = 0
     nb_tr_steps = 0
     tr_loss = 0
-    label_map = {i : label for i, label in enumerate(label_list,1)}
+    label_map = {i : label for i, label in enumerate(simplified_labels[label_list],1)}
     # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
     #     "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
     if args.do_train:
