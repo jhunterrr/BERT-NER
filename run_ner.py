@@ -164,9 +164,8 @@ class NerProcessor(DataProcessor):
         return ["O", "B-MISC", "I-MISC",  "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "[CLS]", "[SEP]"]
 
     # simple labels
-    def get_labels(self, key):
-        return ["O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
-                "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]"]
+    simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
+                "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
    
     #labels to append to sentence after sep token
     def add_simple_labels(self):
@@ -240,7 +239,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         for i, word in enumerate(textlist):
             token = tokenizer.tokenize(word)
             tokens.extend(token)
-            label_1 = get_simple_labels(labellist[i])
+            label_1 = simplified_labels[labellist[i]]
             print(label_1)
             for m in range(len(token)):
                 if m == 0:
@@ -267,7 +266,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             segment_ids.append(0)
             if len(labels) > i:
                 print(labels)
-                label_ids.append(label_map[get_simple_labels(labels[i])])
+                label_ids.append(label_map[simplified_labels[labels[i]]])
                 print(label_ids)
         ntokens.append("[SEP]")
         segment_ids.append(0)
