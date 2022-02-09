@@ -165,8 +165,8 @@ class NerProcessor(DataProcessor):
 
     # simple labels
     def get_labels(self, key):
-        return ['O': "O", 'B-MISC': "miscellaneous", 'I-MISC': "miscellaneous", 'B-PER': "person", 'I-PER': "person", 
-                'B-ORG': "organisation", 'I-ORG': "organisation", 'B-LOC': "location", 'I-LOC': "location", '[CLS]': "[CLS]", '[SEP]': "[SEP]"]
+        return ["O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
+                "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]"]
    
     #labels to append to sentence after sep token
     def add_simple_labels(self):
