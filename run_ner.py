@@ -184,8 +184,8 @@ simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellane
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
       
-    for i, label in enumerate(label_list):
-      label_list[i] = simplified_labels[label]
+    #for i, label in enumerate(label_list):
+    #  label_list[i] = simplified_labels[label]
 
     label_map = {label : i for i, label in enumerate(label_list,1)}
     print(label_map)
@@ -459,6 +459,8 @@ def main():
 
     processor = processors[task_name]()
     label_list = processor.get_labels()
+    for i, label in enumerate(label_list):
+      label_list[i] = simplified_labels[label]
     num_labels = len(label_list) + 1
 
     tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
