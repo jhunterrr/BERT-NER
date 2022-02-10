@@ -208,6 +208,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         shuffle_map = list(label_map.values())
         random.shuffle(shuffle_map)
         dict(zip(label_map, shuffle_map))
+        print(label_map) 
 
         # append sep token before addition of label list
         textlist.append("[SEP]")
