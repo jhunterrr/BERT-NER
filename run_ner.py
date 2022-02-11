@@ -175,7 +175,12 @@ class NerProcessor(DataProcessor):
 
 #labels to append to sentence after sep token
 def get_simple_labels():
-    return ["O","person","organisation","location"]      
+    return ["O","person","organisation","location"]   
+
+def shuffle_label_map(labels):
+    shuffle_values = list(labels.values())
+    random.shuffle(shuffle_values)
+    labels = dict(zip(labels, shuffle_values))
       
 # simple labels
 simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
@@ -205,9 +210,10 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         #     labellist.extend("O")
 
         #shuffle label map
-        shuffle_values = list(label_map.values())
-        random.shuffle(shuffle_values)
-        label_map = dict(zip(label_map, shuffle_values))
+        #moving outside method
+#         shuffle_values = list(label_map.values())
+#         random.shuffle(shuffle_values)
+#         label_map = dict(zip(label_map, shuffle_values))
         # print(label_map) 
 
         # append sep token before addition of label list
@@ -518,8 +524,8 @@ def main():
     nb_tr_steps = 0
     tr_loss = 0
     label_map = {i : label for i, label in enumerate(label_list,1)}
-    # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-    #     "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
+    #shuffle label map
+    shuffle_label_map(labels = label_map)
     if args.do_train:
         train_features = convert_examples_to_features(
             train_examples, label_list, args.max_seq_length, tokenizer)
@@ -575,8 +581,8 @@ def main():
         model_to_save.save_pretrained(args.output_dir)
         tokenizer.save_pretrained(args.output_dir)
         label_map = {i : label for i, label in enumerate(label_list,1)}
-        # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-        #     "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
+        #shuffle label map
+        shuffle_label_map(labels = label_map)
         model_config = {"bert_model":args.bert_model,"do_lower":args.do_lower_case,"max_seq_length":args.max_seq_length,"num_labels":len(label_list)+1,"label_map":label_map}
         json.dump(model_config,open(os.path.join(args.output_dir,"model_config.json"),"w"))
         # Load a trained model and config that you have fine-tuned
@@ -614,8 +620,10 @@ def main():
         y_true = []
         y_pred = []
         label_map = {i : label for i, label in enumerate(label_list,1)}
-        # label_map = {"O": 1, "B-MISC": 2, "I-MISC": 2,  "B-PER": 3, "I-PER": 3, "B-ORG": 4,
-        #    "I-ORG": 4, "B-LOC": 5, "I-LOC": 5, "[CLS]": 6, "[SEP]": 7}
+        #shuffle label values
+        shuffle_values = list(label_map.values())
+        random.shuffle(shuffle_values)
+        label_map = dict(zip(label_map, shuffle_values))
         for input_ids, input_mask, segment_ids, label_ids,valid_ids,l_mask in tqdm(eval_dataloader, desc="Evaluating"):
             input_ids = input_ids.to(device)
             input_mask = input_mask.to(device)
