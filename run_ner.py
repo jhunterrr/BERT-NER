@@ -184,7 +184,11 @@ def shuffle_label_map(labels):
       
 # simple labels
 simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
-    "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
+    "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "O", "[SEP]": "O" } 
+
+#original simplified
+#simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
+ #   "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
       
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
@@ -199,21 +203,14 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
     for (ex_index,example) in enumerate(examples):
         textlist = example.text_a.split(' ')
 
-        #code to create text list with all added tokens
-
-        # textlist.append("[SEP]")
-        # textlist.extend(label_list[:-2])
-
         # labellist = example.label
         # labellist.append("[SEP]")
         # for label in label_list[:-2]:
         #     labellist.extend("O")
 
         #shuffle label map
-        #moving outside method
-#         shuffle_values = list(label_map.values())
-#         random.shuffle(shuffle_values)
-#         label_map = dict(zip(label_map, shuffle_values))
+        shuffle_label_map(labels = label_map)
+        
         # print(label_map) 
 
         # append sep token before addition of label list
@@ -524,8 +521,10 @@ def main():
     nb_tr_steps = 0
     tr_loss = 0
     label_map = {i : label for i, label in enumerate(label_list,1)}
+    
     #shuffle label map
-    shuffle_label_map(labels = label_map)
+    #shuffle_label_map(labels = label_map)
+    
     if args.do_train:
         train_features = convert_examples_to_features(
             train_examples, label_list, args.max_seq_length, tokenizer)
@@ -581,8 +580,10 @@ def main():
         model_to_save.save_pretrained(args.output_dir)
         tokenizer.save_pretrained(args.output_dir)
         label_map = {i : label for i, label in enumerate(label_list,1)}
+        
         #shuffle label map
-        shuffle_label_map(labels = label_map)
+        # shuffle_label_map(labels = label_map)
+        
         model_config = {"bert_model":args.bert_model,"do_lower":args.do_lower_case,"max_seq_length":args.max_seq_length,"num_labels":len(label_list)+1,"label_map":label_map}
         json.dump(model_config,open(os.path.join(args.output_dir,"model_config.json"),"w"))
         # Load a trained model and config that you have fine-tuned
@@ -620,10 +621,10 @@ def main():
         y_true = []
         y_pred = []
         label_map = {i : label for i, label in enumerate(label_list,1)}
+        
         #shuffle label values
-        shuffle_values = list(label_map.values())
-        random.shuffle(shuffle_values)
-        label_map = dict(zip(label_map, shuffle_values))
+        #shuffle_label_map(labels = label_map)
+        
         for input_ids, input_mask, segment_ids, label_ids,valid_ids,l_mask in tqdm(eval_dataloader, desc="Evaluating"):
             input_ids = input_ids.to(device)
             input_mask = input_mask.to(device)
