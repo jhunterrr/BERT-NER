@@ -113,7 +113,7 @@ class Ner:
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
       
-    def predict_zero_shot(self, text: str, labellist: List[str]):
+    def predict_zero_shot(self, text: str, labellist: str):
         input = text + "[SEP]" + labelllist
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
