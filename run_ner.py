@@ -204,7 +204,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         #     labellist.extend("O")
 
         #shuffle label map
-        label_map = shuffle_label_map(labels = label_map)
+        shuffle_label_map(labels = label_map)
         
         # print(label_map) 
 
@@ -524,7 +524,7 @@ def main():
     label_map = {i : label for i, label in enumerate(label_list,1)}
     
     #shuffle label map
-    shuffle_label_map(labels = label_map)
+    label_map = shuffle_label_map(labels = label_map)
     
     if args.do_train:
         train_features = convert_examples_to_features(
