@@ -119,7 +119,7 @@ class Ner:
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
         input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
         print(input_ids)
-        input(input_mask)
+        print(input_mask)
         segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
         valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
         with torch.no_grad():
