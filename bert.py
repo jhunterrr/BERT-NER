@@ -114,7 +114,7 @@ class Ner:
         return output
       
     def predict_zero_shot(self, text: str, labellist: str):
-        input = text + "[SEP]" + labelllist
+        input = text + "[SEP]" + labellist
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
         input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
