@@ -178,9 +178,10 @@ def get_simple_labels():
     return ["O","person","organisation","location"]   
 
 def shuffle_label_map(labels):
-    shuffle_values = list(labels.values())
+    copy = labels[:-2]
+    shuffle_values = list(copy.values())
     random.shuffle(shuffle_values)
-    labels = dict(zip(labels, shuffle_values))
+    labels = dict(zip(labels, copy))
     #print(labels)
     return labels
 
