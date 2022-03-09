@@ -212,8 +212,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         # for label in label_list[:-2]:
         #     labellist.extend("O")
 
-        #shuffle label map
-        label_map = shuffle_label_map(labels = label_map)
+       
         
         # print(label_map) 
 
@@ -592,7 +591,7 @@ def main():
         label_map = {i : label for i, label in enumerate(label_list,1)}
         
         #shuffle label map
-        shuffle_label_map(labels = label_map)
+        #shuffle_label_map(labels = label_map)
         
         model_config = {"bert_model":args.bert_model,"do_lower":args.do_lower_case,"max_seq_length":args.max_seq_length,"num_labels":len(label_list)+1,"label_map":label_map}
         json.dump(model_config,open(os.path.join(args.output_dir,"model_config.json"),"w"))
@@ -633,7 +632,7 @@ def main():
         label_map = {i : label for i, label in enumerate(label_list,1)}
         
         #shuffle label values
-        shuffle_label_map(labels = label_map)
+        #shuffle_label_map(labels = label_map)
         
         for input_ids, input_mask, segment_ids, label_ids,valid_ids,l_mask in tqdm(eval_dataloader, desc="Evaluating"):
             input_ids = input_ids.to(device)
