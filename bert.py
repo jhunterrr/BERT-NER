@@ -118,8 +118,8 @@ class Ner:
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
         input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
-        print(input_ids)
-        print(input_mask)
+        #print(input_ids)
+        #print(input_mask)
         segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
         valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
         with torch.no_grad():
@@ -142,7 +142,7 @@ class Ner:
         logits.pop()
 
         labels = [(self.label_map[label],confidence) for label,confidence in logits]
-        words = word_tokenize(text)
+        words = word_tokenize(input)
         assert len(labels) == len(words)
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         output = "blank"
