@@ -112,4 +112,54 @@ class Ner:
         assert len(labels) == len(words)
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
+      
+    def predict_zero_shot(self, text: str, labellist: List[str]):
+        input = text + "[SEP]" + labelllist
+        input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
+        input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
+        input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
+        print(input_ids)
+        input(input_mask)
+        segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
+        valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
+        with torch.no_grad():
+            logits = self.model(input_ids, segment_ids, input_mask,valid_ids)
+        logits = F.softmax(logits,dim=2)
+        logits_label = torch.argmax(logits,dim=2)
+        logits_label = logits_label.detach().cpu().numpy().tolist()[0]
+
+        logits_confidence = [values[label].item() for values,label in zip(logits[0],logits_label)]
+
+        logits = []
+        pos = 0
+        for index,mask in enumerate(valid_ids[0]):
+            if index == 0:
+                continue
+            if mask == 1:
+                logits.append((logits_label[index-pos],logits_confidence[index-pos]))
+            else:
+                pos += 1
+        logits.pop()
+
+        labels = [(self.label_map[label],confidence) for label,confidence in logits]
+        words = word_tokenize(text)
+        assert len(labels) == len(words)
+        output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
+        output = "blank"
+        #create vector with labels, put these labels into groups which model finds equivalent
+        #print vector of results
+        print(labels)
+        
+        #make groups of words that model finds similar
+        #for amount of labels (labels after sep) make a section that prints all words with that label
+        sep_pos = animals.index('[SEP]') # need to find position of seperator, mask ids?
+        before_sep = labels[:sep_pos]
+        after_sep = labels[sep_pos+1:len(words)]
+        for determined_label in after_sep:
+            print("model groups these words to be common with " + determined_label)
+            for predicted_label in before_sep:
+               if predicted_label is determined_label:
+                  print(predicted_label)
+        
+        return output
 
