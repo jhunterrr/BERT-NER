@@ -155,7 +155,7 @@ class Ner:
         print(words)
         print(input_ids)
         print(segment_ids)
-        sep_pos = len(text+1) # need to find position of seperator, mask ids?
+        sep_pos = len(text)+1 # need to find position of seperator, mask ids?
         print("sep pos: " + str(sep_pos))
         before_sep = labels[:sep_pos]
         after_sep = labels[sep_pos+1:len(words)]
