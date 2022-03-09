@@ -166,7 +166,7 @@ class Ner:
         after_sep = output[sep_pos:len(input)]
         print(output)
         for determined_label in after_sep:
-            #print("model groups these words to be common with " + str(determined_label.))
+            print("model groups these words to be common with " + str(determined_label))
             for predicted_label in before_sep:
                if predicted_label is determined_label:
                   print(str(predicted_label))
