@@ -220,7 +220,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
 
         # "O" default for labels
         for label in simp_labs:
-            labellist.extend(simplified_labels.keys()[simplified_labels.values().index(label)])
+            labellist.extend(list(simplified_labels.keys())[list(simplified_labels.values()).index(label)])
         print(labellist)
 
         # print(labellist)
