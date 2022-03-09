@@ -223,8 +223,8 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             labellist.extend(list(simplified_labels.keys())[list(simplified_labels.values()).index(label)])
             print(list(simplified_labels.keys())[list(simplified_labels.values()).index(label)])
             print("simplified")
-            print(list(simplified_labels.keys())
-            print(list(simplified_labels.values())
+            print(list(simplified_labels.keys()))
+            print(list(simplified_labels.values()))
         print(labellist)
 
         # print(labellist)
