@@ -113,7 +113,7 @@ class Ner:
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
       
-    def predict_zero_shot(self, text: str, labellist: list[str]):
+    def predict_zero_shot(self, text: str, labellist: list):
         input = text + " [SEP] " + ' '.join(labellist)
         print(input)
         print(len(input.split()))
