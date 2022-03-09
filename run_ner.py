@@ -184,8 +184,8 @@ def shuffle_label_map(labels):
     random.shuffle(shuffle_values)
     shuffle_key.append("[CLS]")
     shuffle_key.append("[SEP]")                   
-    shuffle_values.append("10")
-    shuffle_values.append("11")  
+    shuffle_values.append(10)
+    shuffle_values.append(11)  
                        
     labels = dict(zip(shuffle_key, shuffle_values))
     #print(labels)
