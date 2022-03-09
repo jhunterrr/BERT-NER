@@ -150,7 +150,7 @@ class Ner:
         words = word_tokenize(input)
         assert len(labels) == len(words)
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
-        output = "blank"
+    
         #create vector with labels, put these labels into groups which model finds equivalent
         #print vector of results
         #print(labels)
@@ -162,13 +162,19 @@ class Ner:
         print(segment_ids)
         sep_pos = words.index("SEP") # need to find position of seperator, mask ids?
         print("sep pos: " + str(sep_pos))
-        before_sep = labels[:sep_pos]
-        after_sep = labels[sep_pos+1:len(input)]
+        before_sep = output[:sep_pos]
+        after_sep = output[sep_pos:len(input)]
+        print(output)
         for determined_label in after_sep:
-            print("model groups these words to be common with " + str(determined_label))
+            #print("model groups these words to be common with " + str(determined_label.))
             for predicted_label in before_sep:
                if predicted_label is determined_label:
                   print(str(predicted_label))
+        
+        #for chosen_label in labellist
+        #  print("model groups these words to be common with " + str(chosen_label))
+        #  for predicted_label in output
+         #   if output["tag"] = 
         
         return output
 
