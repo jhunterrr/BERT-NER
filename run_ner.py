@@ -188,7 +188,7 @@ def shuffle_label_map(labels):
     shuffle_values.append("11")  
                        
     labels = dict(zip(shuffle_key, shuffle_values))
-    print(labels)
+    #print(labels)
     return labels
 
 simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
