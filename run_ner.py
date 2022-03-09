@@ -643,6 +643,8 @@ def main():
                     if j == 0:
                         continue
                     elif label_ids[i][j] == len(label_map):
+                        print(temp_1)
+                        print(temp_2)
                         y_true.append(temp_1)
                         y_pred.append(temp_2)
                         break
