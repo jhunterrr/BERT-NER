@@ -132,6 +132,9 @@ class Ner:
 
         logits_confidence = [values[label].item() for values,label in zip(logits[0],logits_label)]
 
+        print(logits)
+        print(logits_label)
+        
         logits = []
         pos = 0
         for index,mask in enumerate(valid_ids[0]):
@@ -160,7 +163,7 @@ class Ner:
         sep_pos = len(text.split()) # need to find position of seperator, mask ids?
         print("sep pos: " + str(sep_pos))
         before_sep = labels[:sep_pos]
-        after_sep = labels[sep_pos+1:len(words)]
+        after_sep = labels[sep_pos+1:len(input)]
         for determined_label in after_sep:
             print("model groups these words to be common with " + str(determined_label))
             for predicted_label in before_sep:
