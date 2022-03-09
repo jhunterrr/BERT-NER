@@ -178,8 +178,8 @@ def get_simple_labels():
     return ["O","person","organisation","location"]   
 
 def shuffle_label_map(labels):
-    shuffle_key = list(labels.keys()[:-2])
-    shuffle_values = list(labels.values()[-2])
+    shuffle_key = [*labels.keys()][-2])
+    shuffle_values = [*labels.values()][-2])
     random.shuffle(shuffle_values)
     shuffle_key.extend("[CLS]")
     shuffle_key.extend("[SEP]")                   
