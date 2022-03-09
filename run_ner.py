@@ -216,7 +216,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         labellist = example.label
 
         # "O" for sep token
-        labellist.append("O")
+        #labellist.append("O")
 
         # "O" default for labels
         for label in simp_labs:
