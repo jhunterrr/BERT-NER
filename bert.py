@@ -162,14 +162,14 @@ class Ner:
         print(segment_ids)
         sep_pos = words.index("SEP") # need to find position of seperator, mask ids?
         print("sep pos: " + str(sep_pos))
-        before_sep = output[:sep_pos]
-        after_sep = output[sep_pos:len(input)]
+        before_sep = output[:sep_pos-1]
+        after_sep = output[sep_pos+2:len(input)]
         print(output)
         for determined_label in after_sep:
-            print("model groups these words to be common with " + str(determined_label))
+            print("model groups these words to be common with " + str(determined_label["word"]))
             for predicted_label in before_sep:
-               if predicted_label is determined_label:
-                  print(str(predicted_label))
+               if predicted_label["label"] is determined_label["label"]:
+                  print(str(predicted_label["word"]))
         
         #for chosen_label in labellist
         #  print("model groups these words to be common with " + str(chosen_label))
