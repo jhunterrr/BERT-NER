@@ -32,4 +32,5 @@ print(output)
 #New method
 print("Group 4: ZER Test")
 model.predict_zero_shot("Steve goes to the shop in Belfast, Apple", ["person", "location", "organisation"])
+model.predict("Steve goes to the shop in Belfast, Apple, person location organisation")
 
