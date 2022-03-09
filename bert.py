@@ -114,7 +114,7 @@ class Ner:
         return output
       
     def predict_zero_shot(self, text: str, labellist: str):
-        input = text + "[SEP]" + str(labellist)
+        input = text + "[SEP]" + ' '.join(str(e) for e in labellist)
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
         input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
@@ -153,7 +153,7 @@ class Ner:
         #make groups of words that model finds similar
         #for amount of labels (labels after sep) make a section that prints all words with that label
         print(words)
-        sep_pos = words.index('SEP') # need to find position of seperator, mask ids?
+        sep_pos = words.index('[SEP]') # need to find position of seperator, mask ids?
         print("sep pos: " + str(sep_pos))
         before_sep = labels[:sep_pos]
         after_sep = labels[sep_pos+1:len(words)]
