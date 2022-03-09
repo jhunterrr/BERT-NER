@@ -158,10 +158,10 @@ class Ner:
         before_sep = labels[:sep_pos]
         after_sep = labels[sep_pos+1:len(words)]
         for determined_label in after_sep:
-            print("model groups these words to be common with " + determined_label)
+            print("model groups these words to be common with " + str(determined_label))
             for predicted_label in before_sep:
                if predicted_label is determined_label:
-                  print(predicted_label)
+                  print(str(predicted_label))
         
         return output
 
