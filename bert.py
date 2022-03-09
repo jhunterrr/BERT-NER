@@ -151,30 +151,19 @@ class Ner:
         assert len(labels) == len(words)
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
     
-        #create vector with labels, put these labels into groups which model finds equivalent
-        #print vector of results
-        #print(labels)
-        print(zip(words,labels))
         #make groups of words that model finds similar
         #for amount of labels (labels after sep) make a section that prints all words with that label
-        print(words)
-        print(input_ids)
-        print(segment_ids)
-        sep_pos = words.index("SEP") # need to find position of seperator, mask ids?
+        sep_pos = words.index("SEP") # need to find position of seperator
         print("sep pos: " + str(sep_pos))
+        
         before_sep = output[:sep_pos-1]
         after_sep = output[sep_pos+2:len(input)]
-        print(output)
+        
         for determined_label in after_sep:
-            print("model groups these words to be common with " + str(determined_label["word"]))
+            print("model groups these words to be common with: " + str(determined_label["word"]))
             for predicted_label in before_sep:
                if predicted_label["tag"] is determined_label["tag"]:
-                  print(str(predicted_label["word"]))
-        
-        #for chosen_label in labellist
-        #  print("model groups these words to be common with " + str(chosen_label))
-        #  for predicted_label in output
-         #   if output["tag"] = 
+                  print(str(predicted_label["word\n"]))
         
         return output
 
