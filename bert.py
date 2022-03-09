@@ -154,13 +154,13 @@ class Ner:
         #create vector with labels, put these labels into groups which model finds equivalent
         #print vector of results
         #print(labels)
-        
+        print(zip(words,labels))
         #make groups of words that model finds similar
         #for amount of labels (labels after sep) make a section that prints all words with that label
         print(words)
         print(input_ids)
         print(segment_ids)
-        sep_pos = len(text.split()) # need to find position of seperator, mask ids?
+        sep_pos = words.index("SEP") # need to find position of seperator, mask ids?
         print("sep pos: " + str(sep_pos))
         before_sep = labels[:sep_pos]
         after_sep = labels[sep_pos+1:len(input)]
