@@ -168,7 +168,7 @@ class Ner:
         for determined_label in after_sep:
             print("model groups these words to be common with " + str(determined_label["word"]))
             for predicted_label in before_sep:
-               if predicted_label["label"] is determined_label["label"]:
+               if predicted_label["tag"] is determined_label["tag"]:
                   print(str(predicted_label["word"]))
         
         #for chosen_label in labellist
