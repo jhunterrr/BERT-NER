@@ -221,7 +221,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         # "O" default for labels
         for label in simp_labs:
             label_to_add = list(simplified_labels.keys())[list(simplified_labels.values()).index(label)]
-            label_in_string = string(label_to_add)
+            label_in_string = str(label_to_add)
             labellist.append(label_in_string)
         print(labellist)
 
