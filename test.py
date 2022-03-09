@@ -1,6 +1,6 @@
 from bert import Ner
 
-model = Ner("out_base_actual2/")
+model = Ner("out_base_actual_ok/")
 
 #Persons
 print("Group 1: Persons")
