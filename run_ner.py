@@ -206,15 +206,9 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
     features = []
     for (ex_index,example) in enumerate(examples):
         textlist = example.text_a.split(' ')
-
-        # labellist = example.label
-        # labellist.append("[SEP]")
-        # for label in label_list[:-2]:
-        #     labellist.extend("O")
-
-       
         
-        # print(label_map) 
+        label_map = shuffle_label_map(labels = label_map)
+        
 
         # append sep token before addition of label list
         textlist.append("[SEP]")
@@ -231,8 +225,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             label_to_add = list(simplified_labels.keys())[list(simplified_labels.values()).index(label)]
             label_in_string = str(label_to_add)
             labellist.append(label_in_string)
-        #print(labellist)
-        
+
         # "O" default for labels
         #for label in simp_labs:
         #    labellist.append("O")
@@ -246,7 +239,6 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             token = tokenizer.tokenize(word)
             tokens.extend(token)
             label_1 = simplified_labels[labellist[i]]
-            #print(label_1)
             for m in range(len(token)):
                 if m == 0:
                     labels.append(label_1)
