@@ -2,7 +2,7 @@ from bert import Ner
 import sys
 
 # model = Ner(str(sys.argv))
-model = Ner("out_base_simp/")
+model = Ner("out_base_simp_shuffled/")
 
 #Persons
 print("Group 1: Persons")
