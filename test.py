@@ -1,6 +1,7 @@
 from bert import Ner
+import sys
 
-model = Ner("out_base_actual_ok/")
+model = Ner(sys.argv)
 
 #Persons
 print("Group 1: Persons")
