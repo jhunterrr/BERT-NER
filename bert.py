@@ -165,8 +165,6 @@ class Ner:
             print("|------------------------------------------------------|")
             for predicted_label in before_sep:
                if predicted_label["tag"] is determined_label["tag"]:
-                  print(str(predicted_label["tag"]))
-                  print(str(determined_label["tag"]))
                   print(str(predicted_label["word"]))
             print("|------------------------------------------------------|")
         
