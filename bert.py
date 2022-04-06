@@ -81,6 +81,33 @@ class Ner:
             segment_ids.append(0)
             valid_positions.append(0)
         return input_ids,input_mask,segment_ids,valid_positions
+      
+    simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
+    "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" }   
+    
+    def evaluate_zero_shot(self, filename: str, label_list: list):
+        #initialise text and value for retrieving label
+        text = []
+        ground_truth = []
+        sentence = ''
+        label_loc = 4
+        #read file
+        with open(filename) as file:
+            next(file)
+            for line in file:
+                    #if blank line, process method and reset sentence
+                    if line.isspace() and text != []:
+                        ground_truth = simplified_labels[ground_truth]
+                        predict_zero_shot(text, label_list, ground_truth)
+                        test_text = ''
+                        text = []
+                        ground_truth = []
+                    #if not blank line, add to line, find label and assign it
+                    if not line.isspace():
+                        word = line.split(' ')[0]
+                        ground_truth = line.split(' ')[label_loc-1]
+                        text.append(word)
+                        labels.append(label)
 
     def predict(self, text: str):
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(text)
@@ -113,15 +140,14 @@ class Ner:
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
       
-    def predict_zero_shot(self, text: str, labellist: list):
-        input = text + " [SEP] " + ' '.join(labellist)
+    def predict_zero_shot(self, text: str, label_list: list, ground_truth: list):
+        input = text + " [SEP] " + ' '.join(label_list)
         print(input)
         print(len(input.split()))
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
         input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
-        #print(input_ids)
-        #print(input_mask)
+  
         segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
         valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
         with torch.no_grad():
@@ -150,7 +176,13 @@ class Ner:
         words = word_tokenize(input)
         assert len(labels) == len(words)
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
-    
+
+        # make dict for text and ground truth
+        # using dictionary comprehension
+        # to convert lists to dictionary
+        text_keys = text.split()
+        result_dict = {text_keys[i]: ground_truth[i] for i in range(len(text_keys))}
+        
         #make groups of words that model finds similar
         #for amount of labels (labels after sep) make a section that prints all words with that label
         sep_pos = words.index("SEP") # need to find position of seperator
@@ -166,6 +198,9 @@ class Ner:
             for predicted_label in before_sep:
                if predicted_label["tag"] is determined_label["tag"]:
                   print(str(predicted_label["word"]))
+                  if result_dict[str(predicted_label["word"])] == predicted_label["tag"]:
+                    print("correct")
+                  else: print("incorrect")
             print("|------------------------------------------------------|")
         
         return output
