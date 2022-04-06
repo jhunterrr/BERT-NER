@@ -105,9 +105,9 @@ class Ner:
                     #if not blank line, add to line, find label and assign it
                     if not line.isspace():
                         word = line.split(' ')[0]
-                        ground_truth = line.split(' ')[label_loc-1]
+                        label = line.split(' ')[label_loc-1]
                         text.append(word)
-                        labels.append(label)
+                        ground_truth.append(label)
 
     def predict(self, text: str):
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(text)
