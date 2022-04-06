@@ -3,7 +3,7 @@ import sys
 
 # model = Ner(str(sys.argv))
 model = Ner("./content/out_base_simp_shuffled/")
-path = "./data/valid.txt"
+path = "BERT-NER/test.py/data/valid.txt"
 
 #Persons
 print("Group 1: Persons")
