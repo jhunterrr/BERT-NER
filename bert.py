@@ -97,7 +97,8 @@ class Ner:
             for line in file:
                     #if blank line, process method and reset sentence
                     if line.isspace() and text != []:
-                        ground_truth = simplified_labels[ground_truth]
+                        for i, old_lab in enumerate(ground_truth):
+                            ground_truth[i] = simplified_labels[old_lab]
                         predict_zero_shot(text, label_list, ground_truth)
                         test_text = ''
                         text = []
