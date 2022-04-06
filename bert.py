@@ -99,7 +99,7 @@ class Ner:
                     if line.isspace() and text != []:
                         for i, old_lab in enumerate(ground_truth):
                             ground_truth[i] = simplified_labels[old_lab.strip()]
-                        predict_zero_shot(text, label_list, ground_truth)
+                        model.predict_zero_shot(text, label_list, ground_truth)
                         test_text = ''
                         text = []
                         ground_truth = []
