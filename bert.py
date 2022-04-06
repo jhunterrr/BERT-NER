@@ -81,11 +81,11 @@ class Ner:
             segment_ids.append(0)
             valid_positions.append(0)
         return input_ids,input_mask,segment_ids,valid_positions
-      
-    simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
-    "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" }   
+       
     
     def evaluate_zero_shot(self, filename: str, label_list: list):
+        simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
+                             "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
         #initialise text and value for retrieving label
         text = []
         ground_truth = []
@@ -157,9 +157,6 @@ class Ner:
         logits_label = logits_label.detach().cpu().numpy().tolist()[0]
 
         logits_confidence = [values[label].item() for values,label in zip(logits[0],logits_label)]
-
-        print(logits)
-        print(logits_label)
         
         logits = []
         pos = 0
