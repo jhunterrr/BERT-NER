@@ -3,6 +3,7 @@ import sys
 
 # model = Ner(str(sys.argv))
 model = Ner("out_base_simp_shuffled/")
+path = "./data/valid.txt"
 
 #Persons
 print("Group 1: Persons")
@@ -33,6 +34,5 @@ print(output)
 
 #New method
 print("Group 4: ZER Test")
-model.predict_zero_shot("Steve goes to the shop in Belfast, Apple", ["person", "location", "organisation"])
-output = model.predict("Steve goes to the shop in Belfast, Apple, [SEP] person location organisation")
-print(output)
+model.predict_zero_shot(path, ["person", "location", "organisation"])
+
