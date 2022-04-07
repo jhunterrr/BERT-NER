@@ -156,7 +156,8 @@ class Ner:
                          "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
         
         for label in enumerate(output):
-            output["tag"] = simplified_labels[label["tag"]]
+            old_label = label["tag"]
+            output["tag"] = simplified_labels[old_label]
         
         # make dict for text and ground truth
         # using dictionary comprehension
