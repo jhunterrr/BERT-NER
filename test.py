@@ -7,6 +7,9 @@ def evaluate_zero_shot(filename: str, label_list: list):
     #initialise text and value for retrieving label
     text = []
     ground_truth = []
+    entities_selected = 0
+    entities_relevant = 0
+    true_positives = 0
     label_loc = 4
     #read file
     with open(filename) as file:
@@ -18,7 +21,7 @@ def evaluate_zero_shot(filename: str, label_list: list):
                         print(simplified_labels[old_lab.strip()])
                         ground_truth[i] = simplified_labels[old_lab.strip()]
                     print(ground_truth)
-                    model.predict_zero_shot(text, label_list, ground_truth)
+                    true_positives, entities_selected, entities_relevant += model.predict_zero_shot(text, label_list, ground_truth)
                     text = []
                     ground_truth = []
                 #if not blank line, add to line, find label and assign it
@@ -27,6 +30,8 @@ def evaluate_zero_shot(filename: str, label_list: list):
                     label = line.split(' ')[label_loc-1]
                     text.append(word)
                     ground_truth.append(label)
+         print("Recall: " + str(true_positives / entities_relevant))
+         print("Precision: " + str(true_positives / entities_selected))
 
 # model = Ner(str(sys.argv))
 model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/content/out_base_simp_shuffled")
