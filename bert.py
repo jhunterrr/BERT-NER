@@ -164,13 +164,11 @@ class Ner:
             print("|------------------------------------------------------|")
             print("| Model groups these words to be common with: " + str(label) + " |")
             print("|------------------------------------------------------|")
-            for word in text:
-              if result_dict[word] != 'O':
-                  print("here 1")
+            for words in output:
+              if result_dict[words["word"]] != 'O':
                   entities_selected += 1
-              if word == label:
-                  print("here 2")
-                  selected = result_dict.get(word)
+              if words["tag"] == label:
+                  selected = result_dict.get(words["word"])
                   #print(predicted_label["word"])
                   entities_relevant += 1
                   if selected:
