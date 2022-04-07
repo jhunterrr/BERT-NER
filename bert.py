@@ -167,7 +167,7 @@ class Ner:
             for predicted_label in before_sep:
               if predicted_label["tag"] is determined_label["tag"]:
                   print(str(predicted_label["word"]))
-                  if result_dict[str(predicted_label["word"])] == predicted_label["tag"]:
+                  if result_dict[str(predicted_label["word"])] == predicted_label["tag"] and str(determined_label["word"]) == str(result_dict[predicted_label["word"]):
                     print("correct")
                   else: print("incorrect")
             print("|------------------------------------------------------|")
