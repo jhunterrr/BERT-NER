@@ -182,7 +182,6 @@ def get_examples(filename: str):
     #initialise text and value for retrieving label
     text = []
     ground_truth = []
-    sentence = ''
     label_loc = 4
     #read file
     with open(filename) as file:
@@ -192,10 +191,9 @@ def get_examples(filename: str):
                 if line.isspace() and text != []:
                     for i, old_lab in enumerate(ground_truth):
                         ground_truth[i] = simplified_labels[old_lab.strip()]
+                    print(text)
+                    print(ground_truth)
                     return text, ground_truth
-                    #test_text = ''
-                    #text = []
-                    #ground_truth = []
                 #if not blank line, add to line, find label and assign it
                 if not line.isspace():
                     word = line.split(' ')[0]
