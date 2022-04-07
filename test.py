@@ -19,6 +19,8 @@ def evaluate_zero_shot(filename: str, label_list: list):
                         ground_truth[i] = simplified_labels[old_lab.strip()]
                     print(ground_truth)
                     model.predict_zero_shot(text, label_list, ground_truth)
+                    text = []
+                    ground_truth = []
                 #if not blank line, add to line, find label and assign it
                 if not line.isspace():
                     word = line.split(' ')[0]
