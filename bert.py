@@ -114,6 +114,11 @@ class Ner:
         return output
       
     def predict_zero_shot(self, text: list, label_list: list, ground_truth: list):
+      
+        entities_selected = 0
+        entities_relevant = 0
+        true_positives = 0
+      
         input = ' '.join(text) + " [SEP] " + ' '.join(label_list)
         print(input)
         print(len(input.split()))
@@ -165,15 +170,18 @@ class Ner:
             print("| Model groups these words to be common with: " + str(determined_label["word"]) + " |")
             print("|------------------------------------------------------|")
             for predicted_label in before_sep:
+              entities_selected += 1
               if predicted_label["tag"] is determined_label["tag"]:
                   word = predicted_label.get(predicted_label["word"])
                   print(predicted_label["word"])
+                  entities_relevant += 1
                   if word:
                     if result_dict[str(predicted_label["word"])] == predicted_label["tag"] and determined_label["word"] == result_dict[str(predicted_label["word"])]:
                       print("correct")
+                      true_positives += 1
                     else: print("incorrect")
                   else: print("incorrect")
             print("|------------------------------------------------------|")
         
-        return output
+        return true_positives, entities_selected, entities_relevant
 
