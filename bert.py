@@ -113,8 +113,8 @@ class Ner:
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
       
-    def predict_zero_shot(self, text: str, label_list: list, ground_truth: list):
-        input = text + " [SEP] " + ' '.join(label_list)
+    def predict_zero_shot(self, text: list, label_list: list, ground_truth: list):
+        input = ' '.join(text) + " [SEP] " + ' '.join(label_list)
         print(input)
         print(len(input.split()))
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
