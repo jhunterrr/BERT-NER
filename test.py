@@ -2,7 +2,7 @@ from bert import Ner
 import sys
 
 # model = Ner(str(sys.argv))
-model = Ner("./drive/MyDrive/'Colab Notebooks'/BERT-NER/out_base_simp_shuffled/")
+model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/")
 path = "./valid.txt"
 
 #Persons
