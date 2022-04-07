@@ -157,7 +157,7 @@ class Ner:
         # to convert lists to dictionary
         result_dict = {text[i]: ground_truth[i] for i in range(len(text))}
         
-        labels = [person, organisation, location]
+        labels = ["person", "organisation", "location"]
         
         # make groups of words that model finds similar
         for label in labels:
