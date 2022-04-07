@@ -168,6 +168,7 @@ class Ner:
               if result_dict[words["word"]] != 'O':
                   entities_selected += 1
               if words["tag"] == label:
+                  print("here")
                   selected = result_dict.get(words["word"])
                   #print(predicted_label["word"])
                   entities_relevant += 1
