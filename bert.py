@@ -113,6 +113,74 @@ class Ner:
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
       
+    def predict_original(self, text: list, ground_truth: list):
+      
+        entities_selected = 0
+        entities_relevant = 0
+        true_positives = 0
+ 
+        input = ' '.join(text)
+        print(input)
+    
+        input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
+        input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
+        input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
+  
+        segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
+        valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
+        with torch.no_grad():
+            logits = self.model(input_ids, segment_ids, input_mask,valid_ids)
+        logits = F.softmax(logits,dim=2)
+        logits_label = torch.argmax(logits,dim=2)
+        logits_label = logits_label.detach().cpu().numpy().tolist()[0]
+
+        logits_confidence = [values[label].item() for values,label in zip(logits[0],logits_label)]
+        
+        logits = []
+        pos = 0
+        for index,mask in enumerate(valid_ids[0]):
+            if index == 0:
+                continue
+            if mask == 1:
+                logits.append((logits_label[index-pos],logits_confidence[index-pos]))
+            else:
+                pos += 1
+        logits.pop()
+
+        labels = [(self.label_map[label],confidence) for label,confidence in logits]
+        words = word_tokenize(input)
+        assert len(labels) == len(words)
+        output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
+
+        # make dict for text and ground truth
+        # using dictionary comprehension
+        # to convert lists to dictionary
+        result_dict = {text[i]: ground_truth[i] for i in range(len(text))}
+        
+        labels = [person, organisation, location]
+        
+        # make groups of words that model finds similar
+        for label in labels
+            print("|------------------------------------------------------|")
+            print("| Model groups these words to be common with: " + str(label) + " |")
+            print("|------------------------------------------------------|")
+            for word in text:
+              if result_dict[word] != 'O':
+                  entities_selected += 1
+              if word is label
+                  selected = result_dict.get(word)
+                  print(predicted_label["word"])
+                  entities_relevant += 1
+                  if selected:
+                    if result_dict[word] is label:
+                      print("correct")
+                      true_positives += 1
+                    else: print("incorrect")
+                  else: print("incorrect")
+            print("|------------------------------------------------------|")
+        
+        return true_positives, entities_selected, entities_relevant
+      
     def predict_zero_shot(self, text: list, label_list: list, ground_truth: list):
       
         entities_selected = 0
@@ -170,7 +238,8 @@ class Ner:
             print("| Model groups these words to be common with: " + str(determined_label["word"]) + " |")
             print("|------------------------------------------------------|")
             for predicted_label in before_sep:
-              entities_selected += 1
+              if predicted_label["tag"] != 'O':
+                  entities_selected += 1
               if predicted_label["tag"] is determined_label["tag"]:
                   word = predicted_label.get(predicted_label["word"])
                   print(predicted_label["word"])
