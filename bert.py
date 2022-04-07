@@ -169,14 +169,15 @@ class Ner:
                   entities_selected += 1
               if word is label:
                   selected = result_dict.get(word)
-                  print(predicted_label["word"])
+                  #print(predicted_label["word"])
                   entities_relevant += 1
                   if selected:
-                    if result_dict[word] is label:
+                    print(selected)
+                    if str(selected) == str(label):
                       print("correct")
                       true_positives += 1
-                    else: print("incorrect")
-                  else: print("incorrect")
+                    #else: print("incorrect")
+                  #else: print("incorrect")
             print("|------------------------------------------------------|")
         
         return true_positives, entities_selected, entities_relevant
