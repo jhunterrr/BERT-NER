@@ -113,91 +113,65 @@ class Ner:
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
       
-    def predict_zero_shot(self, filename: str, label_list: list):
-      for text, ground_truth in get_examples(filename):
-          input = text + " [SEP] " + ' '.join(label_list)
-          print(input)
-          print(len(input.split()))
-          input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
-          input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
-          input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
+    def predict_zero_shot(self, text: str, label_list: list, ground_truth: list):
+        input = text + " [SEP] " + ' '.join(label_list)
+        print(input)
+        print(len(input.split()))
+        input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
+        input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
+        input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
   
-          segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
-          valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
-          with torch.no_grad():
-              logits = self.model(input_ids, segment_ids, input_mask,valid_ids)
-          logits = F.softmax(logits,dim=2)
-          logits_label = torch.argmax(logits,dim=2)
-          logits_label = logits_label.detach().cpu().numpy().tolist()[0]
+        segment_ids = torch.tensor([segment_ids],dtype=torch.long,device=self.device)
+        valid_ids = torch.tensor([valid_ids],dtype=torch.long,device=self.device)
+        with torch.no_grad():
+            logits = self.model(input_ids, segment_ids, input_mask,valid_ids)
+        logits = F.softmax(logits,dim=2)
+        logits_label = torch.argmax(logits,dim=2)
+        logits_label = logits_label.detach().cpu().numpy().tolist()[0]
 
-          logits_confidence = [values[label].item() for values,label in zip(logits[0],logits_label)]
+        logits_confidence = [values[label].item() for values,label in zip(logits[0],logits_label)]
         
-          logits = []
-          pos = 0
-          for index,mask in enumerate(valid_ids[0]):
-              if index == 0:
-                  continue
-              if mask == 1:
-                  logits.append((logits_label[index-pos],logits_confidence[index-pos]))
-              else:
-                  pos += 1
-          logits.pop()
+        logits = []
+        pos = 0
+        for index,mask in enumerate(valid_ids[0]):
+            if index == 0:
+                continue
+            if mask == 1:
+                logits.append((logits_label[index-pos],logits_confidence[index-pos]))
+            else:
+                pos += 1
+        logits.pop()
 
-          labels = [(self.label_map[label],confidence) for label,confidence in logits]
-          words = word_tokenize(input)
-          assert len(labels) == len(words)
-          output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
+        labels = [(self.label_map[label],confidence) for label,confidence in logits]
+        words = word_tokenize(input)
+        assert len(labels) == len(words)
+        output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
 
-          # make dict for text and ground truth
-          # using dictionary comprehension
-          # to convert lists to dictionary
-          text_keys = text.split()
-          result_dict = {text_keys[i]: ground_truth[i] for i in range(len(text_keys))}
+        # make dict for text and ground truth
+        # using dictionary comprehension
+        # to convert lists to dictionary
+        text_keys = text.split()
+        result_dict = {text_keys[i]: ground_truth[i] for i in range(len(text_keys))}
         
-          # make groups of words that model finds similar
-          # for amount of labels (labels after sep) make a section that prints all words with that label
-          sep_pos = words.index("SEP") # need to find position of seperator
-          print("sep pos: " + str(sep_pos))
+        # make groups of words that model finds similar
+        # for amount of labels (labels after sep) make a section that prints all words with that label
+        sep_pos = words.index("SEP") # need to find position of seperator
+        print("sep pos: " + str(sep_pos))
         
-          before_sep = output[:sep_pos-1]
-          after_sep = output[sep_pos+2:len(input)]
+        before_sep = output[:sep_pos-1]
+        after_sep = output[sep_pos+2:len(input)]
         
-          for determined_label in after_sep:
-              print("|------------------------------------------------------|")
-              print("| Model groups these words to be common with: " + str(determined_label["word"]) + " |")
-              print("|------------------------------------------------------|")
-              for predicted_label in before_sep:
-                if predicted_label["tag"] is determined_label["tag"]:
-                    print(str(predicted_label["word"]))
-                    if result_dict[str(predicted_label["word"])] == predicted_label["tag"]:
-                      print("correct")
-                    else: print("incorrect")
-              print("|------------------------------------------------------|")
+        for determined_label in after_sep:
+            print("|------------------------------------------------------|")
+            print("| Model groups these words to be common with: " + str(determined_label["word"]) + " |")
+            print("|------------------------------------------------------|")
+            for predicted_label in before_sep:
+              if predicted_label["tag"] is determined_label["tag"]:
+                  print(str(predicted_label["word"]))
+                  if result_dict[str(predicted_label["word"])] == predicted_label["tag"]:
+                    print("correct")
+                  else: print("incorrect")
+            print("|------------------------------------------------------|")
         
-          return output
- 
-def get_examples(filename: str):
-    simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
-                         "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
-    #initialise text and value for retrieving label
-    text = []
-    ground_truth = []
-    label_loc = 4
-    #read file
-    with open(filename) as file:
-        next(file)
-        for line in file:
-                #if blank line, process method and reset sentence
-                if line.isspace() and text != []:
-                    for i, old_lab in enumerate(ground_truth):
-                        ground_truth[i] = simplified_labels[old_lab.strip()]
-                    print(text)
-                    print(ground_truth)
-                    return text, ground_truth
-                #if not blank line, add to line, find label and assign it
-                if not line.isspace():
-                    word = line.split(' ')[0]
-                    label = line.split(' ')[label_loc-1]
-                    text.append(word)
-                    ground_truth.append(label)
+        return output
 
