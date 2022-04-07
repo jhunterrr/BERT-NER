@@ -166,8 +166,10 @@ class Ner:
             print("|------------------------------------------------------|")
             for word in text:
               if result_dict[word] != 'O':
+                  print("here 1")
                   entities_selected += 1
               if word is label:
+                  print("here 2")
                   selected = result_dict.get(word)
                   #print(predicted_label["word"])
                   entities_relevant += 1
