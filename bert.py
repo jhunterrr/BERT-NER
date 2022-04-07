@@ -173,6 +173,7 @@ class Ner:
                   entities_relevant += 1
                   if selected:
                     print(selected)
+                    print(label)
                     if str(selected) == str(label):
                       print("correct")
                       true_positives += 1
