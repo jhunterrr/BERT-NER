@@ -152,6 +152,12 @@ class Ner:
         assert len(labels) == len(words)
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
 
+        simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
+                         "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
+        
+        for label in enumerate(output):
+            output["tag"] = simplified_labels[label.strip()]
+        
         # make dict for text and ground truth
         # using dictionary comprehension
         # to convert lists to dictionary
