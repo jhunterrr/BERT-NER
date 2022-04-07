@@ -34,5 +34,5 @@ print(output)
 
 #New method
 print("Group 4: ZER Test")
-model.evaluate_zero_shot(path, ["person", "location", "organisation"])
+model.predict_zero_shot(path, ["person", "location", "organisation"])
 
