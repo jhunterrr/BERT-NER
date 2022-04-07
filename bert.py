@@ -160,14 +160,14 @@ class Ner:
         labels = [person, organisation, location]
         
         # make groups of words that model finds similar
-        for label in labels
+        for label in labels:
             print("|------------------------------------------------------|")
             print("| Model groups these words to be common with: " + str(label) + " |")
             print("|------------------------------------------------------|")
             for word in text:
               if result_dict[word] != 'O':
                   entities_selected += 1
-              if word is label
+              if word is label:
                   selected = result_dict.get(word)
                   print(predicted_label["word"])
                   entities_relevant += 1
