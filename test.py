@@ -30,8 +30,8 @@ def evaluate_zero_shot(filename: str, label_list: list):
                     label = line.split(' ')[label_loc-1]
                     text.append(word)
                     ground_truth.append(label)
-         print("Recall: " + str(true_positives / entities_relevant))
-         print("Precision: " + str(true_positives / entities_selected))
+        print("Recall: " + str(true_positives / entities_relevant))
+        print("Precision: " + str(true_positives / entities_selected))
 
 # model = Ner(str(sys.argv))
 model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/content/out_base_simp_shuffled")
