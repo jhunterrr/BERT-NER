@@ -113,7 +113,7 @@ class Ner:
         output = [{"word":word,"tag":label,"confidence":confidence} for word,(label,confidence) in zip(words,labels)]
         return output
       
-    def predict_zero_shot(filename: str, label_list: list):
+    def predict_zero_shot(self, filename: str, label_list: list):
       for text, ground_truth in get_examples(filename):
           input = text + " [SEP] " + ' '.join(label_list)
           print(input)
