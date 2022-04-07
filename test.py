@@ -21,7 +21,10 @@ def evaluate_zero_shot(filename: str, label_list: list):
                         print(simplified_labels[old_lab.strip()])
                         ground_truth[i] = simplified_labels[old_lab.strip()]
                     print(ground_truth)
-                    true_positives, entities_selected, entities_relevant += model.predict_zero_shot(text, label_list, ground_truth)
+                    tp, es, er = model.predict_zero_shot(text, label_list, ground_truth)
+                    true_positives += tp
+                    entities_selected += es
+                    entities_relevant += er
                     text = []
                     ground_truth = []
                 #if not blank line, add to line, find label and assign it
