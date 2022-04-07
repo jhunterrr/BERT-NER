@@ -150,8 +150,7 @@ class Ner:
         # make dict for text and ground truth
         # using dictionary comprehension
         # to convert lists to dictionary
-        text_keys = text.split()
-        result_dict = {text_keys[i]: ground_truth[i] for i in range(len(text_keys))}
+        result_dict = {text[i]: ground_truth[i] for i in range(len(text))}
         
         # make groups of words that model finds similar
         # for amount of labels (labels after sep) make a section that prints all words with that label
