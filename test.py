@@ -69,7 +69,7 @@ print(output)
 
 #New method
 print("Group 4: ZER Test")
-#evaluate_zero_shot(path, ["person", "location", "organisation"])
+evaluate_zero_shot(path, ["person", "location", "organisation"])
 
 def evaluate_zero_shot(filename: str):
     simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
