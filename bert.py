@@ -253,7 +253,7 @@ class Ner:
                         print("correct")
                         true_positives += 1
                       else: print("incorrect")
-                    else: print("incorrect")
+                  else: print("incorrect")
             print("|------------------------------------------------------|")
         
         return true_positives, entities_selected, entities_relevant
