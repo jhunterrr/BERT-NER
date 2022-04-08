@@ -249,7 +249,7 @@ class Ner:
                   entities_selected += 1
               if predicted_label["tag"] is determined_label["tag"]:
                   word = predicted_label.get(predicted_label["word"])
-                  #print(predicted_label["word"])
+                  print(word)
                   entities_relevant += 1
                   if word:
                     print(determined_label["word"])
