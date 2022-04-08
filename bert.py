@@ -245,8 +245,8 @@ class Ner:
             print("| Model groups these words to be common with: " + str(determined_label["word"]) + " |")
             print("|------------------------------------------------------|")
             for predicted_label in before_sep:
-              print(predicted_label["tag"])
               if predicted_label["tag"].strip() != 'O':
+                  print(predicted_label["tag"])
                   entities_selected += 1
                   if predicted_label["tag"] is determined_label["tag"]:
                       entities_relevant += 1
