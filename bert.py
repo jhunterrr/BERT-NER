@@ -172,6 +172,7 @@ class Ner:
             print("|------------------------------------------------------|")
             for predicted in output:
               selected = result_dict.get(predicted["word"])
+              print(selected)
               if selected:
                 if result_dict[selected] != 'O':
                     entities_selected += 1
