@@ -249,14 +249,16 @@ class Ner:
                   entities_selected += 1
               if predicted_label["tag"] is determined_label["tag"]:
                   word = predicted_label.get(predicted_label["word"])
-                  print(predicted_label["word"])
+                  #print(predicted_label["word"])
                   entities_relevant += 1
                   if word:
+                    print(determined_label["word"])
+                    print(result_dict[str(predicted_label["word"])])
                     if determined_label["word"] == result_dict[str(predicted_label["word"])]:
                       print("correct")
                       true_positives += 1
-                    else: print("incorrect")
-                  else: print("incorrect")
+                    #else: print("incorrect")
+                  #else: print("incorrect")
             print("|------------------------------------------------------|")
         
         return true_positives, entities_selected, entities_relevant
