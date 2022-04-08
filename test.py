@@ -20,7 +20,7 @@ def evaluate_zero_shot(filename: str, label_list: list):
                     for i, old_lab in enumerate(ground_truth):
                         print(simplified_labels[old_lab.strip()])
                         ground_truth[i] = simplified_labels[old_lab.strip()]
-                    print(ground_truth)
+                    #print(ground_truth)
                     tp, es, er = model.predict_zero_shot(text, label_list, ground_truth)
                     true_positives += tp
                     entities_selected += es
