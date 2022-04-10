@@ -231,6 +231,7 @@ class Ner:
         # using dictionary comprehension
         # to convert lists to dictionary
         result_dict = {text[i]: ground_truth[i] for i in range(len(text))}
+        print(result_dict)
         
         # make groups of words that model finds similar
         # for amount of labels (labels after sep) make a section that prints all words with that label
@@ -247,9 +248,12 @@ class Ner:
             for predicted_label in before_sep:
               check = result_dict.get(predicted_label["word"])
               if check and check.strip() != 'O':
+                  print("predicted label tag:")
                   print(predicted_label["tag"])
                   entities_selected += 1
                   if predicted_label["tag"] is determined_label["tag"]:
+                      print("determined label tag:")
+                      print(determined_label["tag"])
                       entities_relevant += 1
                       if determined_label["word"] == result_dict[str(predicted_label["word"])]:
                         print("correct")
