@@ -10,6 +10,7 @@ def evaluate_zero_shot(filename: str, label_list: list):
     entities_selected = 0
     entities_relevant = 0
     true_positives = 0
+    total_entities = 0
     label_loc = 4
     #read file
     with open(filename) as file:
@@ -31,8 +32,11 @@ def evaluate_zero_shot(filename: str, label_list: list):
                 if not line.isspace():
                     word = line.split(' ')[0]
                     label = line.split(' ')[label_loc-1]
+                    if label.strip() != 'O':
+                        total_entities += 1
                     text.append(word)
                     ground_truth.append(label)
+        print("Accuracy: " + str(total_entities / true_positives))
         print("Recall: " + str(true_positives / entities_relevant))
         print("Precision: " + str(true_positives / entities_selected))
 
@@ -81,6 +85,7 @@ def evaluate_zero_shot(filename: str):
     entities_selected = 0
     entities_relevant = 0
     true_positives = 0
+    total_entities = 0
     label_loc = 4
     #read file
     with open(filename) as file:
@@ -102,8 +107,11 @@ def evaluate_zero_shot(filename: str):
                 if not line.isspace():
                     word = line.split(' ')[0]
                     label = line.split(' ')[label_loc-1]
+                    if label.strip() != 'O':
+                        total_entities += 1
                     text.append(word)
                     ground_truth.append(label)
+        print("Accuracy: " + str(total_entities / true_positives))
         print("Recall: " + str(true_positives / entities_relevant))
         print("Precision: " + str(true_positives / entities_selected))
         
