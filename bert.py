@@ -172,7 +172,7 @@ class Ner:
             print("|------------------------------------------------------|")
             for predicted in output:
               selected = result_dict.get(predicted["word"])
-              print(selected)
+              #print(selected)
               if selected:
                 if predicted["tag"] != 'O':
                     entities_selected += 1
@@ -180,7 +180,9 @@ class Ner:
                       #print(predicted_label["word"])
                       entities_relevant += 1
                       if selected == label:
-                          print("correct")
+                          print("this tag was correct to the groundtruth")
+                          #print(determined_label["word"], result_dict[str(predicted_label["word"])])
+                          print(predicted["word"])
                           true_positives += 1
                           #else: print("incorrect")
                           #else: print("incorrect")
@@ -230,10 +232,10 @@ class Ner:
         # make dict for text and ground truth
         # using dictionary comprehension
         # to convert lists to dictionary
-        print(text)
-        print(ground_truth)
+        #print(text)
+        #print(ground_truth)
         result_dict = {text[i]: ground_truth[i] for i in range(len(text))}
-        print(result_dict)
+        #print(result_dict)
         
         # make groups of words that model finds similar
         # for amount of labels (labels after sep) make a section that prints all words with that label
