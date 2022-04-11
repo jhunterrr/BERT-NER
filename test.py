@@ -36,7 +36,7 @@ def evaluate_zero_shot(filename: str, label_list: list):
                         total_entities += 1
                     text.append(word)
                     ground_truth.append(label)
-        print("Accuracy: " + str(total_entities / true_positives))
+        print("Accuracy: " + str(true_positives / total_entities))
         print("Recall: " + str(true_positives / entities_relevant))
         print("Precision: " + str(true_positives / entities_selected))
 
@@ -111,7 +111,7 @@ def evaluate_zero_shot(filename: str):
                         total_entities += 1
                     text.append(word)
                     ground_truth.append(label)
-        print("Accuracy: " + str(total_entities / true_positives))
+        print("Accuracy: " + str(true_positives / total_entities))
         print("Recall: " + str(true_positives / entities_relevant))
         print("Precision: " + str(true_positives / entities_selected))
         
