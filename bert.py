@@ -249,9 +249,10 @@ class Ner:
             print("|------------------------------------------------------|")
             for predicted_label in before_sep:
               check = result_dict.get(predicted_label["word"])
+              print("checked word in sentence: " + str(check))
               if check and check.strip() != 'O':
-                  print("predicted label tag:")
-                  print(predicted_label["tag"])
+                  print("predicted label tag and word:")
+                  print(predicted_label["tag"], predicted_label["word"])
                   entities_selected += 1
                   if predicted_label["tag"] is determined_label["tag"]:
                       print("determined label tag:")
