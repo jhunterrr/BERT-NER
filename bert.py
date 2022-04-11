@@ -195,8 +195,8 @@ class Ner:
         true_positives = 0
       
         input = ' '.join(text) + " [SEP] " + ' '.join(label_list)
-        print(input)
-        print(len(input.split()))
+        #print(input)
+        #print(len(input.split()))
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
         input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
@@ -230,13 +230,15 @@ class Ner:
         # make dict for text and ground truth
         # using dictionary comprehension
         # to convert lists to dictionary
+        print(text)
+        print(ground_truth)
         result_dict = {text[i]: ground_truth[i] for i in range(len(text))}
         print(result_dict)
         
         # make groups of words that model finds similar
         # for amount of labels (labels after sep) make a section that prints all words with that label
         sep_pos = words.index("SEP") # need to find position of seperator
-        print("sep pos: " + str(sep_pos))
+        #print("sep pos: " + str(sep_pos))
         
         before_sep = output[:sep_pos-1]
         after_sep = output[sep_pos+2:len(input)]
