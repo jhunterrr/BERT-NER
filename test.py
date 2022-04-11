@@ -88,9 +88,9 @@ def evaluate_zero_shot(filename: str):
                 #if blank line, process method and reset sentence
                 if line.isspace() and text != []:
                     for i, old_lab in enumerate(ground_truth):
-                        print(simplified_labels[old_lab.strip()])
+                        #print(simplified_labels[old_lab.strip()])
                         ground_truth[i] = simplified_labels[old_lab.strip()]
-                    print(ground_truth)
+                    #print(ground_truth)
                     tp, es, er = model.predict_original(text, ground_truth)
                     true_positives += tp
                     entities_selected += es
