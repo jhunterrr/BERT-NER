@@ -120,7 +120,7 @@ class Ner:
         true_positives = 0
  
         input = ' '.join(text)
-        print(input)
+        #print(input)
     
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
