@@ -167,9 +167,9 @@ class Ner:
         
         # make groups of words that model finds similar
         for label in labels:
-            print("|------------------------------------------------------|")
-            print("| Model groups these words to be common with: " + str(label) + " |")
-            print("|------------------------------------------------------|")
+            #print("|------------------------------------------------------|")
+            #print("| Model groups these words to be common with: " + str(label) + " |")
+            #print("|------------------------------------------------------|")
             for predicted in output:
               selected = result_dict.get(predicted["word"])
               #print(selected)
@@ -180,13 +180,13 @@ class Ner:
                       #print(predicted_label["word"])
                       entities_relevant += 1
                       if selected == label:
-                          print("this tag was correct to the groundtruth")
+                          #print("this tag was correct to the groundtruth")
                           #print(determined_label["word"], result_dict[str(predicted_label["word"])])
-                          print(predicted["word"])
+                          #print(predicted["word"])
                           true_positives += 1
                           #else: print("incorrect")
                           #else: print("incorrect")
-            print("|------------------------------------------------------|")
+            #print("|------------------------------------------------------|")
         
         return true_positives, entities_selected, entities_relevant
       
@@ -246,9 +246,9 @@ class Ner:
         after_sep = output[sep_pos+2:len(input)]
         
         for determined_label in after_sep:
-            print("|------------------------------------------------------|")
-            print("| Model groups these words to be common with: " + str(determined_label["word"]) + " |")
-            print("|------------------------------------------------------|")
+            #print("|------------------------------------------------------|")
+            #print("| Model groups these words to be common with: " + str(determined_label["word"]) + " |")
+            #print("|------------------------------------------------------|")
             for predicted_label in before_sep:
               check = result_dict.get(predicted_label["word"])
               if check and check.strip() != 'O':
@@ -260,13 +260,13 @@ class Ner:
                       #print(determined_label["word"])
                       entities_relevant += 1
                       if determined_label["word"] == result_dict[str(predicted_label["word"])]:
-                        print("this tag was correct to the groundtruth")
+                        #print("this tag was correct to the groundtruth")
                         #print(determined_label["word"], result_dict[str(predicted_label["word"])])
-                        print(predicted_label["word"])
+                        #print(predicted_label["word"])
                         true_positives += 1
                       #else: print("incorrect")
                   #else: print("incorrect")
-            print("|------------------------------------------------------|")
+            #print("|------------------------------------------------------|")
         
         return true_positives, entities_selected, entities_relevant
 
