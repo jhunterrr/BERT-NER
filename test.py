@@ -69,6 +69,7 @@ print(output)
 
 #New method
 print("Group 4: ZER Test")
+print("EVALUATION: OUR BERT METHOD")
 evaluate_zero_shot(path, ["person", "location", "organisation"])
 
 def evaluate_zero_shot(filename: str):
@@ -106,6 +107,7 @@ def evaluate_zero_shot(filename: str):
         print("Recall: " + str(true_positives / entities_relevant))
         print("Precision: " + str(true_positives / entities_selected))
         
+print("EVALUATION: ORIGINAL BERT METHOD")
 model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base")
 evaluate_zero_shot(path)
 
