@@ -249,17 +249,17 @@ class Ner:
             print("|------------------------------------------------------|")
             for predicted_label in before_sep:
               check = result_dict.get(predicted_label["word"])
-              print("checked word in sentence: " + str(check))
               if check and check.strip() != 'O':
                   print("predicted label tag and word:")
                   print(predicted_label["tag"], predicted_label["word"])
                   entities_selected += 1
                   if predicted_label["tag"] is determined_label["tag"]:
-                      print("determined label tag:")
-                      print(determined_label["tag"])
+                      print("this tag has been considered relevant to our label:")
+                      print(determined_label["word"])
                       entities_relevant += 1
                       if determined_label["word"] == result_dict[str(predicted_label["word"])]:
-                        print("correct")
+                        print("this tag was correct to the groundtruth")
+                        print(determined_label["word"], result_dict[str(predicted_label["word"])])
                         true_positives += 1
                       #else: print("incorrect")
                   #else: print("incorrect")
