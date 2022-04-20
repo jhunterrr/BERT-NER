@@ -36,7 +36,6 @@ class Ner(BertForTokenClassification):
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None,valid_ids=None,attention_mask_label=None):
         sequence_output = self.bert(input_ids, token_type_ids, attention_mask,head_mask=None)[0]
         batch_size,max_len,feat_dim = sequence_output.shape
-        #valid output device usually cuda but cpu for local run on my machine
         valid_output = torch.zeros(batch_size,max_len,feat_dim,dtype=torch.float32,device='cuda')
         for i in range(batch_size):
             jj = -1
@@ -111,8 +110,6 @@ def readfile(filename):
             continue
         splits = line.split(' ')
         sentence.append(splits[0])
-        #insert sep and labels here?
-        #----------------------------
         label.append(splits[-1][:-1])
 
     if len(sentence) >0:
@@ -179,6 +176,13 @@ def get_simple_labels():
     return ["O","person","organisation","location"]   
 
 def shuffle_label_map(labels):
+    """ Shuffles the passed set of labels in order to enable our modified method for BERT training
+    
+    Parameters
+    ----------
+    labels : dict
+        The dict of simplified labels to be shuffled
+    """
   
     #set up without CLS and SEP tokens
     shuffle_key = [*labels.keys()][:-2]
@@ -194,7 +198,6 @@ def shuffle_label_map(labels):
     labels["[CLS]"] = 10
     labels["[SEP]"] = 11
 
-    print(labels)
     return labels
 
 simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
@@ -202,20 +205,15 @@ simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellane
       
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer):
     """Loads a data file into a list of `InputBatch`s."""
-      
-    #for i, label in enumerate(label_list):
-    #  label_list[i] = simplified_labels[label]
 
     label_map = {label : i for i, label in enumerate(label_list,1)}
-    print(label_map)
 
     features = []
     for (ex_index,example) in enumerate(examples):
         textlist = example.text_a.split(' ')
         
         label_map = shuffle_label_map(labels = label_map)
-        
-
+       
         # append sep token before addition of label list
         textlist.append("[SEP]")
         simp_labs = get_simple_labels()
@@ -231,12 +229,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             label_to_add = list(simplified_labels.keys())[list(simplified_labels.values()).index(label)]
             label_in_string = str(label_to_add)
             labellist.append(label_in_string)
-
-        # "O" default for labels
-        #for label in simp_labs:
-        #    labellist.append("O")
-
-
+            
         tokens = []
         labels = []
         valid = []
@@ -432,7 +425,6 @@ def main():
     processors = {"ner":NerProcessor}
 
     if args.local_rank == -1 or args.no_cuda:
-    #cuda instead of cpu usually
         device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
         n_gpu = torch.cuda.device_count()
     else:
@@ -527,10 +519,7 @@ def main():
     nb_tr_steps = 0
     tr_loss = 0
     label_map = {i : label for i, label in enumerate(label_list,1)}
-    
-    #shuffle label map
-    #label_map = shuffle_label_map(labels = label_map)
-    
+
     if args.do_train:
         train_features = convert_examples_to_features(
             train_examples, label_list, args.max_seq_length, tokenizer)
@@ -586,10 +575,7 @@ def main():
         model_to_save.save_pretrained(args.output_dir)
         tokenizer.save_pretrained(args.output_dir)
         label_map = {i : label for i, label in enumerate(label_list,1)}
-        
-        #shuffle label map
-        #shuffle_label_map(labels = label_map)
-        
+
         model_config = {"bert_model":args.bert_model,"do_lower":args.do_lower_case,"max_seq_length":args.max_seq_length,"num_labels":len(label_list)+1,"label_map":label_map}
         json.dump(model_config,open(os.path.join(args.output_dir,"model_config.json"),"w"))
         # Load a trained model and config that you have fine-tuned
@@ -627,10 +613,7 @@ def main():
         y_true = []
         y_pred = []
         label_map = {i : label for i, label in enumerate(label_list,1)}
-        
-        #shuffle label values
-        #shuffle_label_map(labels = label_map)
-        
+
         for input_ids, input_mask, segment_ids, label_ids,valid_ids,l_mask in tqdm(eval_dataloader, desc="Evaluating"):
             input_ids = input_ids.to(device)
             input_mask = input_mask.to(device)
