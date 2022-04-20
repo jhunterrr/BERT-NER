@@ -188,6 +188,8 @@ def shuffle_label_map(labels):
     #groups with all value pairs
     groups = defaultdict(list)
     for k,v in labels.items():
+      print(k)
+      print(v)
       groups[v].append(k)
     
     #random.shuffle(shuffle_values)
