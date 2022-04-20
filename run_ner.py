@@ -181,37 +181,14 @@ def get_simple_labels():
 def shuffle_label_map(labels):
     shuffle_key = [*labels.keys()][:-2]
     shuffle_values = [*labels.values()][:-2]
-    
-    #new labels without cls and sep
-    #labels = dict(zip(shuffle_key, shuffle_values))
-        
-    #groups with all value pairs
-    #groups = defaultdict(list)
-    #for k,v in labels.items():
-      #print(k)
-      #print(v)
-      #groups[v].append(k)
-    
+    #print(shuffle_key)
     random.shuffle(shuffle_values)
-    
-    #dict(zip(list(groups.keys()), random.sample(list(groups.values()), len(groups))))
-    
-    #labels = defaultdict(list)
-    #for k,v in labels.items():
-    #  labels[v].append(k)
-    
-    labels = dict(zip(shuffle_key, shuffle_values))
-      
-    labels["[CLS]"] = 10
-    labels["[SEP]"] = 11
-    
-    #shuffle_key.append("[CLS]")
-    #shuffle_key.append("[SEP]")                   
-    #shuffle_values.append(10)
-    #shuffle_values.append(11)  
+    shuffle_key.append("[CLS]")
+    shuffle_key.append("[SEP]")                   
+    shuffle_values.append(10)
+    shuffle_values.append(11)  
                        
     labels = dict(zip(shuffle_key, shuffle_values))
-    
     print(labels)
     return labels
 
