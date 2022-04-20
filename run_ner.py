@@ -192,7 +192,7 @@ def shuffle_label_map(labels):
     
     #random.shuffle(shuffle_values)
     
-    dict(zip(groups.keys(), random.sample(groups.values(), len(groups))))
+    dict(zip(list(groups.keys()), random.sample(list(groups.values()), len(groups))))
     
     labels = defaultdict(list)
     for k,v in labels.iteritems():
