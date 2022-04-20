@@ -195,7 +195,7 @@ def shuffle_label_map(labels):
     dict(zip(list(groups.keys()), random.sample(list(groups.values()), len(groups))))
     
     labels = defaultdict(list)
-    for k,v in labels.iteritems():
+    for k,v in labels.items():
       labels[v].append(k)
       
     labels["[CLS]"] = 10
