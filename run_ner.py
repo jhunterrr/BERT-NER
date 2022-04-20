@@ -8,6 +8,7 @@ import os
 import random
 import sys
 
+from collections import defaultdict
 
 import numpy as np
 import torch
@@ -180,15 +181,34 @@ def get_simple_labels():
 def shuffle_label_map(labels):
     shuffle_key = [*labels.keys()][:-2]
     shuffle_values = [*labels.values()][:-2]
-    #print(shuffle_key)
-    random.shuffle(shuffle_values)
-    shuffle_key.append("[CLS]")
-    shuffle_key.append("[SEP]")                   
-    shuffle_values.append(10)
-    shuffle_values.append(11)  
-                       
+    
+    #new labels without cls and sep
     labels = dict(zip(shuffle_key, shuffle_values))
-    #print(labels)
+        
+    #groups with all value pairs
+    groups = defaultdict(list)
+    for k,v in labels.iteritems():
+      groups[v].append(k)
+    
+    #random.shuffle(shuffle_values)
+    
+    dict(zip(groups.keys(), random.sample(groups.values(), len(groups))))
+    
+    labels = defaultdict(list)
+    for k,v in labels.iteritems():
+      labels[v].append(k)
+      
+    labels["[CLS]"] = 10
+    labels["[SEP]"] = 11
+    
+    #shuffle_key.append("[CLS]")
+    #shuffle_key.append("[SEP]")                   
+    #shuffle_values.append(10)
+    #shuffle_values.append(11)  
+                       
+    #labels = dict(zip(shuffle_key, shuffle_values))
+    
+    print(labels)
     return labels
 
 simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
