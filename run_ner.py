@@ -179,16 +179,21 @@ def get_simple_labels():
     return ["O","person","organisation","location"]   
 
 def shuffle_label_map(labels):
+  
+    #set up without CLS and SEP tokens
     shuffle_key = [*labels.keys()][:-2]
     shuffle_values = [*labels.values()][:-2]
-    #print(shuffle_key)
+    
+    #shuffle values
     random.shuffle(shuffle_values)
-    shuffle_key.append("[CLS]")
-    shuffle_key.append("[SEP]")                   
-    shuffle_values.append(10)
-    shuffle_values.append(11)  
-                       
+    
+    #create new dict
     labels = dict(zip(shuffle_key, shuffle_values))
+    
+    #re-add CLS and SEP tokens
+    labels["[CLS]"] = 10
+    labels["[SEP]"] = 11
+
     print(labels)
     return labels
 
