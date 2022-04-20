@@ -173,7 +173,7 @@ class NerProcessor(DataProcessor):
 
 #labels to append to sentence after sep token
 def get_simple_labels():
-    return ["O","person","organisation","location"]   
+    return ["O","person","organisation","location","miscellaneous"]   
 
 def shuffle_label_map(labels):
     """ Shuffles the passed set of labels in order to enable our modified method for BERT training
@@ -262,10 +262,7 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
             ntokens.append(token)
             segment_ids.append(0)
             if len(labels) > i:
-                #print(labels)
                 label_ids.append(label_map[labels[i]])
-                # label_ids.append(label_map[simplified_labels[labels[i]]])
-                #print(label_ids)
         ntokens.append("[SEP]")
         segment_ids.append(0)
         valid.append(1)
