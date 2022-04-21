@@ -39,7 +39,7 @@ def evaluate_zero_shot(filename: str, label_list=None: list):
                         total_entities += 1
                     text.append(word)
                     ground_truth.append(label)
-          accuracy = true_positives / total_entities
+        accuracy = true_positives / total_entities
         recall = true_positives / entities_relevant
         precision = true_positives / entities_selected
         f1 = 2 * (precision * recall) / (precision + recall)
