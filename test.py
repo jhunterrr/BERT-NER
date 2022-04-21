@@ -1,7 +1,7 @@
 from bert import Ner
 import sys
 
-def evaluate_zero_shot(filename: str, label_list=None: list):
+def evaluate_zero_shot(filename, label_list=None):
     simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
                          "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
     #initialise text and value for retrieving label
