@@ -107,8 +107,8 @@ def main():
     
     
     print("EVALUATION: OUR BERT METHOD")
-    model = Ner(args.model_dir_new, ["person", "location", "organisation", "miscellaneous"])
-    evaluate_zero_shot(path)
+    model = Ner(args.model_dir_new)
+    evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"])
     
     print("EVALUATION: ORIGINAL BERT METHOD")
     model = Ner(args.model_dir_orig)
