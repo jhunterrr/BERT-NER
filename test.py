@@ -2,7 +2,7 @@ from bert import Ner
 import sys
 import argparse
 
-def evaluate_zero_shot(self, filename, label_list=None):
+def evaluate_zero_shot(filename, label_list=None):
     simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
                          "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
     #initialise text and value for retrieving label
@@ -51,8 +51,7 @@ def evaluate_zero_shot(self, filename, label_list=None):
         print("Precision: " + str(precision))
         print("F1 score: " + str(f1))
 
-# model = Ner(str(sys.argv))
-model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/content/out_base_simp_shuffled")
+#model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/content/out_base_simp_shuffled")
 path = "/content/drive/MyDrive/Colab Notebooks/BERT-NER/valid.txt"
 
 #Persons
@@ -108,11 +107,11 @@ def main():
     
     print("EVALUATION: OUR BERT METHOD")
     model = Ner(args.model_dir_new)
-    model.evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"])
+    evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"])
     
     print("EVALUATION: ORIGINAL BERT METHOD")
     model = Ner(args.model_dir_orig)
-    model.evaluate_zero_shot(path)
+    evaluate_zero_shot(path)
     
 if __name__ == "__main__":
     main()
