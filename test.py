@@ -103,6 +103,8 @@ def main():
     parser.add_argument("--model_dir_new", default=None, type=str, required=True,
                         help="The new BERT model to be used in evaluation ")
     
+    args = parser.parse_args()
+    
     
     print("EVALUATION: OUR BERT METHOD")
     model = Ner(args.model_dir_new, ["person", "location", "organisation", "miscellaneous"])
