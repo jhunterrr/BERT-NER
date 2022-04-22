@@ -54,41 +54,7 @@ def evaluate_zero_shot(filename, label_list=None):
 #model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/content/out_base_simp_shuffled")
 path = "/content/drive/MyDrive/Colab Notebooks/BERT-NER/valid.txt"
 
-#Persons
-print("Group 1: Persons")
-print("Expected: Final classification for person label below")
-expected = model.predict("person")
-output = model.predict("Steve John James Daniel Zendaya Robert Pattinson")
-print(expected)
-print("Actual Results:")
-print(output)
-  
-#Organisations
-print("Group 2: Organisations")
-print("Expected: Final classification for person label below")
-expected = model.predict("organisation")
-output = model.predict("Starbucks Microsoft AMD Intel Target Kellogs Walmart Disney")
-print(expected)
-print("Actual Results:")
-print(output)
 
-#Locations
-print("Group 3: Locations")
-print("Expected: Final classification for person label below")
-expected = model.predict("location")
-output = model.predict("Berlin New York Munich Belfast Dublin England America")
-print(expected)
-print("Actual Results:")
-print(output)
-
-#New method
-print("Group 4: ZER Test")
-#print("EVALUATION: OUR BERT METHOD")
-#evaluate_zero_shot(path, ["person", "location", "organisation"])
-        
-print("EVALUATION: ORIGINAL BERT METHOD")
-#model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base")
-#evaluate_zero_shot(path)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -104,9 +70,38 @@ def main():
     
     args = parser.parse_args()
     
-    
-    print("EVALUATION: OUR BERT METHOD")
+    #set model to our new BERT model
     model = Ner(args.model_dir_new)
+    
+    #Persons
+    print("Group 1: Persons")
+    print("Expected: Final classification for person label below")
+    expected = model.predict("person")
+    output = model.predict("Steve John James Daniel Zendaya Robert Pattinson")
+    print(expected)
+    print("Actual Results:")
+    print(output)
+  
+    #Organisations
+    print("Group 2: Organisations")
+    print("Expected: Final classification for person label below")
+    expected = model.predict("organisation")
+    output = model.predict("Starbucks Microsoft AMD Intel Target Kellogs Walmart Disney")
+    print(expected)
+    print("Actual Results:")
+    print(output)
+
+    #Locations
+    print("Group 3: Locations")
+    print("Expected: Final classification for person label below")
+    expected = model.predict("location")
+    output = model.predict("Berlin New York Munich Belfast Dublin England America")
+    print(expected)
+    print("Actual Results:")
+    print(output)
+
+    #New method
+    print("EVALUATION: OUR BERT METHOD")
     evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"])
     
     print("EVALUATION: ORIGINAL BERT METHOD")
