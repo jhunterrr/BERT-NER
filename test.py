@@ -2,7 +2,9 @@ from bert import Ner
 import sys
 import argparse
 
-def evaluate_zero_shot(filename, label_list=None):
+
+
+def evaluate_zero_shot(filename, label_list=None, model_path):
     simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
                          "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
     #initialise text and value for retrieving label
@@ -24,8 +26,10 @@ def evaluate_zero_shot(filename, label_list=None):
                         ground_truth[i] = simplified_labels[old_lab.strip()]
                     #print(ground_truth)
                     if label_list != None:
+                        model = Ner(model_path)
                         tp, es, er = model.predict_zero_shot(text, label_list, ground_truth)
                     else:
+                        model = Ner(model_path)
                         tp, es, er = model.predict_original(text, ground_truth)
                     true_positives += tp
                     entities_selected += es
@@ -54,7 +58,8 @@ def evaluate_zero_shot(filename, label_list=None):
 #model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/content/out_base_simp_shuffled")
 path = "/content/drive/MyDrive/Colab Notebooks/BERT-NER/valid.txt"
 
-
+#set model to our new BERT model
+model = Ner(args.model_dir_new)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -69,9 +74,6 @@ def main():
                         help="The new BERT model to be used in evaluation ")
     
     args = parser.parse_args()
-    
-    #set model to our new BERT model
-    model = Ner(args.model_dir_new)
     
     #Persons
     print("Group 1: Persons")
@@ -100,13 +102,19 @@ def main():
     print("Actual Results:")
     print(output)
 
+    #set model to our new BERT model
+    model_path = args.model_dir_new
+    
     #New method
     print("EVALUATION: OUR BERT METHOD")
-    evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"])
+    evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"], model_path)
     
+    #set model to original BERT model
+    model_path = args.model_dir_orig
+    
+    #Old method
     print("EVALUATION: ORIGINAL BERT METHOD")
-    model = Ner(args.model_dir_orig)
-    evaluate_zero_shot(path)
+    evaluate_zero_shot(path, model_path)
     
 if __name__ == "__main__":
     main()
