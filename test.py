@@ -8,6 +8,7 @@ def evaluate_zero_shot(filename, model_path, label_list=None):
     simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
                          "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
     #initialise text and value for retrieving label
+    model = Ner(model_path)
     text = []
     ground_truth = []
     entities_selected = 0
@@ -26,10 +27,8 @@ def evaluate_zero_shot(filename, model_path, label_list=None):
                         ground_truth[i] = simplified_labels[old_lab.strip()]
                     #print(ground_truth)
                     if label_list != None:
-                        model = Ner(model_path)
                         tp, es, er = model.predict_zero_shot(text, label_list, ground_truth)
                     else:
-                        model = Ner(model_path)
                         tp, es, er = model.predict_original(text, ground_truth)
                     true_positives += tp
                     entities_selected += es
