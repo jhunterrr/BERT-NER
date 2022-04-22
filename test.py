@@ -1,5 +1,6 @@
 from bert import Ner
 import sys
+import argparse
 
 def evaluate_zero_shot(filename, label_list=None):
     simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
