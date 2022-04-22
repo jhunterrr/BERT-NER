@@ -72,6 +72,8 @@ def main():
     
     args = parser.parse_args()
     
+    model = Ner(args.model_dir_new)
+    
     #Persons
     print("Group 1: Persons")
     print("Expected: Final classification for person label below")
