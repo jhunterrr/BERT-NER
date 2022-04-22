@@ -2,7 +2,7 @@ from bert import Ner
 import sys
 import argparse
 
-def evaluate_zero_shot(filename, label_list=None):
+def evaluate_zero_shot(self, filename, label_list=None):
     simplified_labels = { "O": "O", "B-MISC": "miscellaneous", "I-MISC": "miscellaneous", "B-PER": "person", "I-PER": "person", 
                          "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
     #initialise text and value for retrieving label
@@ -108,11 +108,11 @@ def main():
     
     print("EVALUATION: OUR BERT METHOD")
     model = Ner(args.model_dir_new)
-    evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"])
+    model.evaluate_zero_shot(path, ["person", "location", "organisation", "miscellaneous"])
     
     print("EVALUATION: ORIGINAL BERT METHOD")
     model = Ner(args.model_dir_orig)
-    evaluate_zero_shot(path)
+    model.evaluate_zero_shot(path)
     
 if __name__ == "__main__":
     main()
