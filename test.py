@@ -58,9 +58,6 @@ def evaluate_zero_shot(filename, model_path, label_list=None):
 #model = Ner("/content/drive/MyDrive/Colab Notebooks/BERT-NER/out_base_simp_shuffled/content/out_base_simp_shuffled")
 path = "/content/drive/MyDrive/Colab Notebooks/BERT-NER/valid.txt"
 
-#set model to our new BERT model
-model = Ner(args.model_dir_new)
-
 def main():
     parser = argparse.ArgumentParser()
 
