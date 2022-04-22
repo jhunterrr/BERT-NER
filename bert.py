@@ -156,6 +156,7 @@ class Ner:
                          "B-ORG": "organisation", "I-ORG": "organisation", "B-LOC": "location", "I-LOC": "location", "[CLS]": "[CLS]", "[SEP]": "[SEP]" } 
         
         for i, label in enumerate(output):
+            print(output[i]["tag"])
             output[i]["tag"] = simplified_labels[label["tag"]]
         
         # make dict for text and ground truth
@@ -163,7 +164,7 @@ class Ner:
         # to convert lists to dictionary
         result_dict = {text[i]: ground_truth[i] for i in range(len(text))}
         
-        labels = ["person", "organisation", "location"]
+        labels = ["person", "organisation", "location", "miscellaneous"]
         
         # make groups of words that model finds similar
         for label in labels:
@@ -197,8 +198,6 @@ class Ner:
         true_positives = 0
       
         input = ' '.join(text) + " [SEP] " + ' '.join(label_list)
-        #print(input)
-        #print(len(input.split()))
         input_ids,input_mask,segment_ids,valid_ids = self.preprocess(input)
         input_ids = torch.tensor([input_ids],dtype=torch.long,device=self.device)
         input_mask = torch.tensor([input_mask],dtype=torch.long,device=self.device)
