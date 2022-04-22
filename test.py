@@ -110,6 +110,9 @@ def main():
     print("EVALUATION: ORIGINAL BERT METHOD")
     model = Ner(args.model_dir_orig)
     evaluate_zero_shot(path)
+    
+if __name__ == "__main__":
+    main()
 
 
 
