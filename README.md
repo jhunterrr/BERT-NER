@@ -23,12 +23,12 @@ Run the below cell on the chosen python notebook to begin training of the resear
 # Result
 
 ## BERT-BASE
-
+```
 Accuracy: 0.9588515634081134
 Recall: 0.9595207630568803
 Precision: 0.23988019076422007
 F1 score: 0.3838083052227521
-
+```
 
 ## Pretrained model download from [here](https://1drv.ms/u/s!Auc3VRul9wo5hghurzE47bTRyUeR?e=08seO3)
 
