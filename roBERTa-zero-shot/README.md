@@ -4,3 +4,4 @@
 ### Jamie Hunter - 40204692 - CSC4006
 
 #### In the code, we will find a .ipynb file which contains all the methods needed, including requirements, initialisation, evaluation, and training.
+#### **Disclaimer: The evaluation process takes several hours**
